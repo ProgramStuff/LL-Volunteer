@@ -1,0 +1,19 @@
+{
+  "name": "ll-volunteer",
+  "version": "1.0.0",
+  "description": "Lego League volunteer information system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ProgramStuff/LL-Volunteer.git"
+  },
+  "author": "Jordan Kelsey",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ProgramStuff/LL-Volunteer/issues"
+  },
+  "homepage": "https://github.com/ProgramStuff/LL-Volunteer#readme"
+}
