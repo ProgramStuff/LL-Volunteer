@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import MenuAppBar from './MenuAppBar';
+import DrawerAppBar from './DrawerAppBar';
 
 function Copyright(props) {
   return (
@@ -26,8 +26,6 @@ function Copyright(props) {
     </Typography>
   );
 }
-
-// TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme({
     palette: {
@@ -48,7 +46,7 @@ export default function SignIn() {
   return (
 
     <ThemeProvider theme={defaultTheme}>
-            <MenuAppBar />
+            <DrawerAppBar />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
