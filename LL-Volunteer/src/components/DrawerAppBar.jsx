@@ -14,9 +14,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { Outlet, Link } from "react-router-dom";
 
 const drawerWidth = 240;
-const navItems = ['Home', 'Message Board', 'Login'];
+const navItems = ['Home', 'Board', 'Register', 'Login'];
 
 function DrawerAppBar(props) {
   const { window } = props;
@@ -70,7 +71,7 @@ function DrawerAppBar(props) {
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
               <Button key={item} sx={{ color: '#fff' }}>
-                {item}
+                <Link to={item}>{item}</Link>
               </Button>
             ))}
           </Box>
@@ -87,7 +88,7 @@ function DrawerAppBar(props) {
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
           }}
         >
           {drawer}
