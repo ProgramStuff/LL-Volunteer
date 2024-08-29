@@ -1,8 +1,10 @@
 import { Outlet, Link } from "react-router-dom";
-import DrawerAppBar from "../DrawerAppBar";
+import DrawerAppBar from "../components/DrawerAppBar";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import Footer from "../Footer";
+import Footer from "../components/Footer";
+import { Container } from '@mui/material';
+
 
 const darkTheme = createTheme({
   palette: {
@@ -13,12 +15,12 @@ const darkTheme = createTheme({
 const Layout = () => {
   return (
     <ThemeProvider theme={darkTheme}>
-    <div>
+    <Container>
       <CssBaseline />
       <DrawerAppBar />
       <h1>Message Board</h1>
-      <Footer />
-    </div>
+        <Footer />
+    </Container>
     </ThemeProvider>
   )
 };
