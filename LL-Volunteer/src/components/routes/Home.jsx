@@ -1,8 +1,8 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import DrawerAppBar from './components/DrawerAppBar';
+import DrawerAppBar from '../DrawerAppBar';
 import { Container } from '@mui/material';
-import Footer from './components/Footer';
+import Footer from '../Footer';
 
 
 const darkTheme = createTheme({
