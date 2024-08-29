@@ -1,0 +1,116 @@
+/* HTML Styles */
+
+/* Body styles */
+body {
+    font-family: sans-serif, Arial;
+    font-size: 14px;
+    color: black;
+    margin: 0% 11%;
+}
+
+/* Main content styles */
+#mainSection{
+    margin-left: 1.5em;
+    column-count: 2;
+    column-gap: 3em;
+    margin-bottom: 1em;
+}
+
+#titleH1{
+    margin-bottom: .55em;
+    margin-top: .8em;
+    font-size: 3rem;
+}
+
+article{
+    break-inside: avoid;
+}
+
+button {
+    padding: .8em 2em;
+    font-weight: bold;
+    font-family: sans-serif, Arial;
+    text-align: center;
+    border: 2px solid rgb(19, 48, 80); 
+    border-radius: 4px;
+    background-color: rgb(26, 68, 112);
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+button:hover{
+    background-color: rgba(26, 67, 112, .9);
+    cursor: pointer;
+}
+
+#alinks{
+    margin-left: 2.5em;
+}
+
+.links {
+    color: black;
+    font-weight: 500;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.links:hover {
+    cursor: pointer;
+}
+
+/* Article Style */
+#art2{
+    display: grid;
+    grid-template-columns: auto auto; /* Two columns with auto width */
+    grid-template-rows: auto auto; /* Two rows with auto height */
+    grid-gap: .5em;
+    margin-top: 3.5em;
+}
+
+#art1p{
+    font-size: 1.5em;
+    margin-top: 0;
+    margin-bottom: 1em;
+}
+
+#art3 {
+    width: 80%;
+    margin-left: 5rem;
+}
+
+#art4 {
+    margin-top: 1.5rem;
+    padding: 0 5rem 0 5rem;
+}
+
+.artSection{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.artSection img{
+    display: block;
+}
+
+.artSection{
+    break-inside: avoid;
+}
+
+/* Footer styles */
+footer {
+    font-weight: 550;
+    color: white;
+    text-align: center;
+    padding: 2em 0em;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+}
+
+footer p{
+    margin-top: .4rem;
+    margin-bottom: .2rem;
+}
