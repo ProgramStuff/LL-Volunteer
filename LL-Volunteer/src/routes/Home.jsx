@@ -2,8 +2,12 @@ import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import DrawerAppBar from '../components/DrawerAppBar';
-import { Container } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 import Footer from '../components/Footer';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import NoteAltIcon from '@mui/icons-material/NoteAlt';
+import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 
 
 const darkTheme = createTheme({
@@ -41,43 +45,35 @@ export default function Home() {
 
           <article id="art2">
               <section className="artSection">
-                  <img src="/Clock.png" alt="Clock" width="15%"/>
+                  <AccessTimeIcon fontSize='large'/>
                   <a className="links" href="https://www.firstinspires.org/team-event-search#type=teams&sort=name&programs=FLLJR,FLL,FTC,FRC&year=2023">Upcoming Events</a>
                   <p>Click here to learn more about future FFL events in your area</p>
               </section>
 
               <section className="artSection">
-                  <img src="/Clipboard.png" alt="Clipboard" width="15%"/>
+                  <FormatListNumberedIcon fontSize='large' />
                   <a className="links" href="https://www.firstinspires.org/ways-to-help/volunteer/how-to-register">Requirements</a>
                   <p>Click here to learn more about the requirements to become a FFL Volunteer</p>
               </section>
 
               <section class="artSection">
-                  <img src="/Checkbox.png" alt="Checkbox" width="15%"/>
+                  <NoteAltIcon fontSize='large' />
                   <a class="links" href="https://www.firstinspires.org/resource-library/volunteer/general-volunteer-resources">Expectations</a>
                   <p>Click here to learn more about the expectations of a FFL Volunteer</p>
               </section>
 
               <section className="artSection">
-                  <img src="/Blocks.png" alt="Blocks" width="15%"/>
+                  <GridViewRoundedIcon fontSize='large' />
                   <a className="links" href="https://www.firstinspires.org/">First Lego Lego</a>
                   <p>Click here to learn more about First Lego League</p>
               </section>
           </article>
               
-          <article id="art4">
+          {/* <article id="art4">
               <p>Timeless design or futuristic backlit keyboard? No matter what you prefer we got you covered. Nam ut justo placerat, eleifend sem at, finibus velit.<br/><br/>Nam ut justo placerat, eleifend sem at, finibus velit.Nam ut justo placerat, eleifend sem at, finibus velit. <br/><br/>Nam ut justo placerat, eleifend sem at, finibus velit.Nam ut justo placerat, eleifend sem at, finibus velit. Nam ut justo placerat, eleifend sem at, finibus velit. Nam ut justo placerat.</p>
-          </article>
+          </article> */}
         </section>
-
-        <footer>
-          <section>
-              <img src="/Socials.png" alt="Socials" width="100"/>
-          </section>
-
-          <p>Contact Us</p>
           <Footer/>
-          </footer>
         </Container>
       </ThemeProvider>
     </>
