@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DrawerAppBar from '../components/DrawerAppBar';
+import Footer from '../components/Footer';
 
 function Copyright(props) {
   return (
@@ -130,7 +131,7 @@ export default function Register() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
+        <Footer />
       </Container>
     </ThemeProvider>
   );
