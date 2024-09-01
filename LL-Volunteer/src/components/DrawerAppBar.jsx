@@ -14,12 +14,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 const drawerWidth = 240;
 const navItems = ['Home', 'Board', 'Register', 'Login'];
 
-function DrawerAppBar(props) {
+export default function DrawerAppBar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -97,8 +97,7 @@ function DrawerAppBar(props) {
       <Box component="main" sx={{ p: 3 }}>
         <Toolbar />
       </Box>
+      <Outlet />
     </Box>
   );
 }
-
-export default DrawerAppBar;

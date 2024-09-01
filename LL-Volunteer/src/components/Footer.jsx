@@ -6,7 +6,7 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 export default function Footer(props) {
     return (
-      <Typography variant="body2" color="text.secondary" align="center" marginTop={35} {...props}>
+      <Typography variant="body2" color="text.secondary" align="center" marginTop={10} marginBottom={5} {...props}>
         <GitHubIcon fontSize='large' />
         <LinkedInIcon fontSize='large' />
         <br />

@@ -68,10 +68,6 @@ export default function Home() {
                   <p>Click here to learn more about First Lego League</p>
               </section>
           </article>
-              
-          {/* <article id="art4">
-              <p>Timeless design or futuristic backlit keyboard? No matter what you prefer we got you covered. Nam ut justo placerat, eleifend sem at, finibus velit.<br/><br/>Nam ut justo placerat, eleifend sem at, finibus velit.Nam ut justo placerat, eleifend sem at, finibus velit. <br/><br/>Nam ut justo placerat, eleifend sem at, finibus velit.Nam ut justo placerat, eleifend sem at, finibus velit. Nam ut justo placerat, eleifend sem at, finibus velit. Nam ut justo placerat.</p>
-          </article> */}
         </section>
           <Footer/>
         </Container>

@@ -6,7 +6,7 @@ import Register from './routes/Register';
 
 export const router = createBrowserRouter([
     {path: "/", element: <Home /> },
-    {path: "/Home", element: <Home /> },
+    {path: "Home", element: <Home /> },
     {path: "Board", element: <Board /> },
     {path: "Register", element: <Register /> },
     {path: "Login", element: <Login /> },
