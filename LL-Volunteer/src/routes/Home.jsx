@@ -56,9 +56,9 @@ export default function Home() {
                   <p>Click here to learn more about the requirements to become a FFL Volunteer</p>
               </section>
 
-              <section class="artSection">
+              <section className="artSection">
                   <NoteAltIcon fontSize='large' />
-                  <a class="links" href="https://www.firstinspires.org/resource-library/volunteer/general-volunteer-resources">Expectations</a>
+                  <a className="links" href="https://www.firstinspires.org/resource-library/volunteer/general-volunteer-resources">Expectations</a>
                   <p>Click here to learn more about the expectations of a FFL Volunteer</p>
               </section>
 
