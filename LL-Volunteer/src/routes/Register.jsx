@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from "react";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,6 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DrawerAppBar from '../components/DrawerAppBar';
 import Footer from '../components/Footer';
+import axios from 'axios';
 
 function Copyright(props) {
   return (
@@ -34,15 +35,28 @@ const defaultTheme = createTheme({
     },
 });
 
-export default function Register() {
-  const handleSubmit = (event) => {
+export default function register() {
+  // TODO: Manage all state within one objects
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fName, setFName] = useState("");
+  const [lName, setLName] = useState("");
+
+  async function handleSubmit(event) {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+
+    try {
+      const response = await axios.post("http://localhost:3000/register", { email, password, lName, fName });
+
+      if (response.status === 200) {
+        console.log("Registration successful:", response.data);
+      } else {
+        console.log("Unexpected response:", response);
+      }
+    } catch (error) {
+      console.error("Registration failed:", error);
+    }
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -74,6 +88,7 @@ export default function Register() {
                   id="firstName"
                   label="First Name"
                   autoFocus
+                  onChange={(e) => setFName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -84,6 +99,7 @@ export default function Register() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                  onChange={(e) => setLName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -94,6 +110,7 @@ export default function Register() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -105,6 +122,7 @@ export default function Register() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>

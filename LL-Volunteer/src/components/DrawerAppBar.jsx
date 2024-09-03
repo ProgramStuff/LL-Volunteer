@@ -16,6 +16,9 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Link } from "react-router-dom";
 
+// TODO: Conditionally render logout when logged in
+// TODO: Make get request to an endpoint to retrieve login status
+
 const drawerWidth = 240;
 const navItems = ['Home', 'Board', 'Register', 'Login'];
 
