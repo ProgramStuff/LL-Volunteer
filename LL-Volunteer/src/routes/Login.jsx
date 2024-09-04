@@ -5,7 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -36,17 +36,20 @@ const defaultTheme = createTheme({
 });
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  // Manage state  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   async function handleSubmit(event) {
     event.preventDefault();
 
     try {
+      // Hit server login end point
       const response = await axios.post("http://localhost:3000/login", { email, password });
 
       if (response.status === 200) {
         console.log("Login successful:", response.data);
+        navigate('/')
       } else {
         console.log("Unexpected response:", response);
       }
