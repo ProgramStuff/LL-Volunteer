@@ -7,11 +7,11 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 export default function Footer(props) {
     return (
       <Typography variant="body2" color="text.secondary" align="center" marginTop={10} marginBottom={5} {...props}>
-        <GitHubIcon fontSize='large' />
-        <LinkedInIcon fontSize='large' />
+        <Link color="inherit" href="https://github.com/ProgramStuff"><GitHubIcon fontSize='large' /></Link>
+        <Link color="inherit" href="https://www.linkedin.com/in/jordan-kelsey-824b00255/"><LinkedInIcon fontSize='large' /></Link>
         <br />
         {'Copyright © '}
-        <Link color="inherit" href="https://mui.com/">
+        <Link color="inherit" href="https://jordan-k-portfolio.netlify.app/">
           Jordan Kelsey
         </Link>{' '}
         {new Date().getFullYear()}

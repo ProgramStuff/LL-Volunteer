@@ -5,7 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -36,7 +36,10 @@ const defaultTheme = createTheme({
 });
 
 export default function Login() {
-  // Manage state  const [email, setEmail] = useState("");
+  const context = useOutletContext()
+
+  // Manage state  
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
@@ -49,6 +52,7 @@ export default function Login() {
 
       if (response.status === 200) {
         console.log("Login successful:", response.data);
+        !context.user && context.loginUser();
         navigate('/')
       } else {
         console.log("Unexpected response:", response);
@@ -60,7 +64,6 @@ export default function Login() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <DrawerAppBar />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

@@ -8,6 +8,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
+import { useOutletContext } from 'react-router-dom'
 
 
 const darkTheme = createTheme({
@@ -25,13 +26,12 @@ const darkTheme = createTheme({
 
 
 export default function Home() {
+  const context = useOutletContext()
+
   return (
-    <>
     <ThemeProvider theme={darkTheme}>
       <Container>
       <CssBaseline />
-      <DrawerAppBar />
-
         <section id="mainSection">
           <article id="art1">
               <h1 id="titleH1">First Lego League Volunteer Information</h1>
@@ -72,6 +72,5 @@ export default function Home() {
           <Footer/>
         </Container>
       </ThemeProvider>
-    </>
   );
 }
