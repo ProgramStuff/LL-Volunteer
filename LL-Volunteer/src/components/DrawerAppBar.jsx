@@ -35,8 +35,8 @@ export default function DrawerAppBar(props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [user, setUser] = useState(null)
 
-  const loginUser = () => {
-      setUser({id:1, username:"Jordan", role:["user"]})
+  const loginUser = (id, username, role) => {
+      setUser({id:id, username:username, role:role})
   }
 
   const logoutUser = () => {
@@ -98,12 +98,17 @@ export default function DrawerAppBar(props) {
 
             ))}
 
-            {user && <Button><Link to="/profile">{user.username}</Link></Button>}
+            {user && <Button sx={{ color: '#fff' }}>
+              <Link to="/profile" style={{ color: 'inherit', textDecoration: 'none' }}>Profile</Link>
+            </Button>}
             {user &&
-                <div>
-                    <Button onClick={logoutUser}>Logout</Button>
-                    <Link to="/admin">Admin</Link>
-                </div>
+                <>
+                    <Button sx={{ color: '#fff' }}>
+                      <Link to="/admin" style={{ color: 'inherit', textDecoration: 'none' }}>Admin</Link>
+                    </Button>
+                    <Button sx={{ color: '#fff' }} onClick={logoutUser}>Logout</Button>
+
+                </>
             }
           </Box>
         </Toolbar>

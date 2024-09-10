@@ -52,7 +52,7 @@ export default function Login() {
 
       if (response.status === 200) {
         console.log("Login successful:", response.data);
-        !context.user && context.loginUser();
+        !context.user && context.loginUser(response.data.id, response.data.userName, response.data.role);
         navigate('/')
       } else {
         console.log("Unexpected response:", response);
