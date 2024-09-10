@@ -66,6 +66,13 @@ app.post("/login", async (req, res) => {
     if (result.rows.length > 0) {
       const user = result.rows[0];
       const storedHashedPassword = user.password;
+      const userId = user.userid;
+      const userFName = user.fname;
+      let role = null;
+      email === "test1@gmail.com" ? role = "admin" : role = "user";
+      console.log("user id: " + userId); 
+      console.log("user role: " + role);
+      console.log("user name: " + userFName);
       // Compare user login password to stored hashed password
       bcrypt.compare(password, storedHashedPassword, (err, result) => {
         if (err){
@@ -73,7 +80,7 @@ app.post("/login", async (req, res) => {
         }else {
           if (result){
             console.log("successful Login")
-            res.json({ Status: 200 });
+            res.json({status:200, id: userId, userName: userFName, role: role});
           }else{
             console.log("Incorrect Login")
           }
