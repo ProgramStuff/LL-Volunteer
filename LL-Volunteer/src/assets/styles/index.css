@@ -1,15 +1,8 @@
 /* Body styles */
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-  }
-
 
 
 body {
     background-image: url("https://www.transparenttextures.com/patterns/diagmonds.png");
-    font-family: "Montserrat", sans-serif;
     font-size: 14px;
     margin: 0% 11%;
 }
@@ -32,7 +25,7 @@ article{
     break-inside: avoid;
 }
 
-button {
+/* button {
     padding: .8em 2em;
     font-weight: bold;
     font-family: sans-serif, Arial;
@@ -42,7 +35,7 @@ button {
     background-color: rgb(26, 68, 112);
     color: white;
     transition: background-color 0.3s ease;
-}
+} */
 
 button:hover{
     background-color: rgba(26, 67, 112, .9);

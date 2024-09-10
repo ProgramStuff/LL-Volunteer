@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -14,7 +15,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 // TODO: Conditionally render logout when logged in
 // TODO: Make get request to an endpoint to retrieve login status
@@ -22,9 +24,24 @@ import { Link } from "react-router-dom";
 const drawerWidth = 240;
 const navItems = ['Home', 'Board', 'Register', 'Login'];
 
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
+
 export default function DrawerAppBar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [user, setUser] = useState(null)
+
+  const loginUser = () => {
+      setUser({id:1, username:"Jordan", role:["user"]})
+  }
+
+  const logoutUser = () => {
+      setUser(null)
+  }
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -51,6 +68,8 @@ export default function DrawerAppBar(props) {
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
+    <>
+    <ThemeProvider theme={darkTheme}>
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar component="nav">
@@ -74,9 +93,18 @@ export default function DrawerAppBar(props) {
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
               <Button key={item} sx={{ color: '#fff' }}>
-                <Link to={"/" + item}>{item}</Link>
+                <Link to={"/" + item} style={{ color: 'inherit', textDecoration: 'none' }}>{item}</Link>
               </Button>
+
             ))}
+
+            {user && <Button><Link to="/profile">{user.username}</Link></Button>}
+            {user &&
+                <div>
+                    <Button onClick={logoutUser}>Logout</Button>
+                    <Link to="/admin">Admin</Link>
+                </div>
+            }
           </Box>
         </Toolbar>
       </AppBar>
@@ -101,5 +129,8 @@ export default function DrawerAppBar(props) {
         <Toolbar />
       </Box>
     </Box>
+    <Outlet context={{user, setUser, loginUser, logoutUser}}/>
+    </ThemeProvider>
+    </>
   );
 }

@@ -7,6 +7,7 @@ import { Container } from '@mui/material';
 import Note from "../components/Note.jsx";
 import CreateArea from "../components/CreateArea.jsx";
 import "../assets/styles/board.css"
+import { useOutletContext } from "react-router-dom";
 
 
 const darkTheme = createTheme({
@@ -16,6 +17,7 @@ const darkTheme = createTheme({
 });
 
 export default function Board() {
+  const context = useOutletContext()
 
   const [notes, setNotes] = useState([]);
 
@@ -37,7 +39,6 @@ export default function Board() {
     <ThemeProvider theme={darkTheme}>
     <Container>
       <CssBaseline />
-      <DrawerAppBar />
       <CreateArea onAdd={addNote} />
 
       {notes.map((noteItem, index) => {

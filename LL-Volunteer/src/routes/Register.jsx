@@ -5,7 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -37,6 +37,8 @@ const defaultTheme = createTheme({
 
 
 export default function register() {
+  const context = useOutletContext()
+
   // TODO: Manage all state within one objects
   // Manage state
   const [email, setEmail] = useState("");
@@ -67,7 +69,6 @@ export default function register() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-        <DrawerAppBar />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
