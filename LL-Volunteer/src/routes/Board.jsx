@@ -8,6 +8,7 @@ import Note from "../components/Note.jsx";
 import CreateArea from "../components/CreateArea.jsx";
 import "../assets/styles/board.css"
 import { useOutletContext } from "react-router-dom";
+import axios from 'axios';
 
 
 const darkTheme = createTheme({
@@ -21,18 +22,41 @@ export default function Board() {
 
   const [notes, setNotes] = useState([]);
 
-  function addNote(newNote) {
-    setNotes(prevNotes => {
-      return [...prevNotes, newNote];
-    });
+  async function addNote(newNote) {
+    try {
+      // Hit message insert end point
+      const response = await axios.post("http://localhost:3000/message/add", newNote);
+      if (response.status === 200) {
+        setNotes(prevNotes => {
+          return [...prevNotes, newNote];
+        });
+        console.log("Insert successful:", response.data);
+      } else {
+        console.log("Unexpected response:", response);
+      }
+    } catch (error) {
+      console.error("Update failed:", error);
+    }
   }
 
-  function deleteNote(id) {
-    setNotes(prevNotes => {
-      return prevNotes.filter((noteItem, index) => {
-        return index !== id;
-      });
-    });
+  async function deleteNote(id, title) {
+    try {
+      // Hit message insert end point
+      console.log(title);
+      const response = await axios.post("http://localhost:3000/message/delete", {title: title});
+      if (response.status === 200) {
+        setNotes(prevNotes => {
+          return prevNotes.filter((noteItem, index) => {
+            return index !== id;
+          });
+        });
+        console.log("Delete successful:", response.data);
+      } else {
+        console.log("Unexpected response:", response);
+      }
+    } catch (error) {
+      console.error("Delete failed:", error);
+    }
   }
 
   return (

@@ -68,8 +68,7 @@ app.post("/login", async (req, res) => {
       const storedHashedPassword = user.password;
       const userId = user.userid;
       const userFName = user.fname;
-      let role = null;
-      email === "test1@gmail.com" ? role = "admin" : role = "user";
+      const role = user.role;;
       console.log("user id: " + userId); 
       console.log("user role: " + role);
       console.log("user name: " + userFName);
@@ -126,9 +125,48 @@ app.post("/register", async (req, res) => {
 
 });
 
+// ***** Add Message End Point *****
+app.post("/message/add", async (req, res) => {
+  const { title, content} = req.body;
+  console.log(title, " ||| " , content)
+  try {
+    const result = await db.query(
+      // Insert message data into database
+      "INSERT INTO messageboard (title, content) VALUES ($1, $2)",
+      [title, content]
+    )
+    res.json({ Status: 200 });
+  }catch (err) {
+    console.log(err);
+  }
+})
+
+// ***** Delete Message End Point *****
+// TODO: Modify to expect id
+app.post("/message/delete", async (req, res) => {
+  const title = req.body.title;
+  try {
+    const result = await db.query(
+      // Delete message from database
+      "DELETE FROM messageboard WHERE title = $1",
+      [title]
+    )
+    console.log(title);
+    res.json({ Status: 200 });
+  }catch (err) {
+    console.log(err);
+  }
+})
 
 
-// TODO: Message Board Route
+// ***** Retrieve Message End Point *****
+
+// TODO: Retrieve messages from database
+
+
+
+
+
 
 
 app.listen(port, () => {
