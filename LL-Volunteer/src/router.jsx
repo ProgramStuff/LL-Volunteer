@@ -7,6 +7,7 @@ import Profile from "./routes/Profile";
 import Admin from './routes/Admin';
 import Layout from "./components/Layout";
 import PrivateRoutes from "./routes/PrivateRoutes";
+import UserBoard from "./routes/UserBoard";
 
 export const router = createBrowserRouter(
   [
@@ -16,19 +17,20 @@ export const router = createBrowserRouter(
       children: [
         { path: "/", element: <Home /> },
         { path: "Home", element: <Home /> },
-        { path: "Board", element: <Board /> },
         { path: "Register", element: <Register /> },
         { path: "Login", element: <Login /> },
         { 
           element: <PrivateRoutes role="user" />,
           children: [
             { path: "/profile", element: <Profile /> },
+            { path: "/userBoard", element: <UserBoard /> },
           ]
         },
         { 
           element: <PrivateRoutes role="admin" />,
           children: [
-            { path: "/admin", element: <Admin /> }
+            { path: "admin", element: <Admin /> },
+            { path: "board", element: <Board /> }
           ]
         },
         { 
