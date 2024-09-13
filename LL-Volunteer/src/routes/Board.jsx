@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DrawerAppBar from "../components/DrawerAppBar";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -21,6 +21,34 @@ export default function Board() {
   const context = useOutletContext()
 
   const [notes, setNotes] = useState([]);
+
+  async function loadNotes() {
+    try {
+      // Hit message insert end point
+      const response = await axios.post("http://localhost:3000/message/all");
+      if (response.status === 200) {
+        console.log("Note Data *** " + response.data);
+        const noteData = response.data.data;
+
+        noteData.map((note) => {
+          let id = note.messageId
+          let title = note.title;
+          let content = note.content
+          let newNote = {title: title, content: content}
+          setNotes(prevNotes => {
+            return [...prevNotes, newNote];
+          });
+        });
+   
+        console.log("Load successful:", response.data);
+        return response.data.data;
+      } else {
+        console.log("Unexpected response:", response);
+      }
+    } catch (error) {
+      console.error("Load failed:", error);
+    }
+  }
 
   async function addNote(newNote) {
     try {
@@ -58,10 +86,14 @@ export default function Board() {
       console.error("Delete failed:", error);
     }
   }
+  useEffect(() => {
+    loadNotes();
+  }, [])
 
   return (
     <ThemeProvider theme={darkTheme}>
     <Container>
+      <>
       <CssBaseline />
       <CreateArea onAdd={addNote} />
 
@@ -76,6 +108,7 @@ export default function Board() {
           />
         );
       })}
+      </>
         <Footer />
     </Container>
     </ThemeProvider>

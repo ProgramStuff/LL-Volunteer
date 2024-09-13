@@ -162,11 +162,20 @@ app.post("/message/delete", async (req, res) => {
 // ***** Retrieve Message End Point *****
 
 // TODO: Retrieve messages from database
-
-
-
-
-
+app.post("/message/all", async (req, res) => {
+  try {
+    const result = await db.query("SELECT * FROM messageboard");
+    if (result.rows.length > 0) {
+      const allMessages = result.rows;
+      console.log(allMessages);
+      res.json({ Status: 200, data: allMessages });
+    }else{
+      res.json({ Status: 201, data: "No messages"});
+    }
+  }catch (err) {
+    console.log(err);
+  }
+})
 
 
 app.listen(port, () => {
