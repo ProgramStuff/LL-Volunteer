@@ -27,7 +27,6 @@ export default function UserBoard() {
       // Hit message insert end point
       const response = await axios.post("http://localhost:3000/message/all");
       if (response.status === 200) {
-        console.log("Note Data *** " + response.data);
         const noteData = response.data.data;
 
         noteData.map((note) => {
@@ -40,7 +39,7 @@ export default function UserBoard() {
           });
         });
    
-        console.log("Load successful:", response.data);
+        console.log("Load successful");
         return response.data.data;
       } else {
         console.log("Unexpected response:", response);
@@ -70,7 +69,7 @@ export default function UserBoard() {
         );
       })}
     </Container>
-    <Footer />
+    <Footer sx={{pt: '45vh'}} />
     </ThemeProvider>
   )
 };

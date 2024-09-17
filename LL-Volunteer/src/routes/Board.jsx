@@ -27,7 +27,6 @@ export default function Board() {
       // Hit message insert end point
       const response = await axios.post("http://localhost:3000/message/all");
       if (response.status === 200) {
-        console.log("Note Data *** " + response.data);
         const noteData = response.data.data;
 
         noteData.map((note) => {
@@ -40,7 +39,7 @@ export default function Board() {
           });
         });
    
-        console.log("Load successful:", response.data);
+        console.log("Load successful");
         return response.data.data;
       } else {
         console.log("Unexpected response:", response);
@@ -58,7 +57,7 @@ export default function Board() {
         setNotes(prevNotes => {
           return [...prevNotes, newNote];
         });
-        console.log("Insert successful:", response.data);
+        console.log("Insert successful");
       } else {
         console.log("Unexpected response:", response);
       }
@@ -70,7 +69,6 @@ export default function Board() {
   async function deleteNote(id, title) {
     try {
       // Hit message insert end point
-      console.log(title);
       const response = await axios.post("http://localhost:3000/message/delete", {title: title});
       if (response.status === 200) {
         setNotes(prevNotes => {
@@ -78,7 +76,7 @@ export default function Board() {
             return index !== id;
           });
         });
-        console.log("Delete successful:", response.data);
+        console.log("Delete successful");
       } else {
         console.log("Unexpected response:", response);
       }
@@ -109,7 +107,7 @@ export default function Board() {
         );
       })}
       </>
-        <Footer />
+        <Footer sx={{pt: '45vh'}}/>
     </Container>
     </ThemeProvider>
   )

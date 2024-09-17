@@ -69,7 +69,7 @@ export default function Home() {
               </section>
           </article>
         </section>
-          <Footer/>
+          <Footer sx={{pt: '5vh'}}/>
         </Container>
       </ThemeProvider>
   );

@@ -143,11 +143,9 @@ export default function DrawerAppBar(props) {
               </Button>
 
               {/* Conditionally render "Profile" and "Admin" based on user state */}
-              {user && <Button sx={{ color: '#fff' }}>
+              {user && user.role === "user" && <Button sx={{ color: '#fff' }}>
                 <Link to="/profile" style={{ color: 'inherit', textDecoration: 'none' }}>Profile</Link>
               </Button>}
-
-              
 
               {user && user.role === "admin" && <Button sx={{ color: '#fff' }}>
                 <Link to="/admin" style={{ color: 'inherit', textDecoration: 'none' }}>Admin</Link>

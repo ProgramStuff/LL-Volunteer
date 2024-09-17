@@ -3,7 +3,6 @@ import { Navigate, useOutletContext, Outlet } from "react-router-dom";
 
 export default function PrivateRoutes({role}) {
 	const context = useOutletContext();
-	console.log(context)
 	if (!context.user || !context.user?.role.includes(role)) {
 		return <Navigate to="/" replace />;
 	}
