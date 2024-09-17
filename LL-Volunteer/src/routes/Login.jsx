@@ -16,19 +16,6 @@ import DrawerAppBar from '../components/DrawerAppBar';
 import Footer from '../components/Footer';
 import axios from 'axios';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link to="https://mui.com/" style={{ color: 'inherit' }}>
-        Jordan Kelsey
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 const defaultTheme = createTheme({
   palette: {
     mode: 'dark',
@@ -51,7 +38,7 @@ export default function Login() {
       const response = await axios.post("http://localhost:3000/login", { email, password });
 
       if (response.status === 200) {
-        console.log("Login successful:", response.data);
+        console.log("Login successful");
         !context.user && context.loginUser(response.data.id, response.data.userName, response.data.role);
         navigate('/')
       } else {

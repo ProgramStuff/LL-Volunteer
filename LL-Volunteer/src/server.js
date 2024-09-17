@@ -57,8 +57,6 @@ db.connect(err => {
 
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  console.log(email, password)
-
   try{
     const result = await db.query("SELECT * FROM users WHERE email = $1", [email]);
   // Fetch the user from the database
@@ -69,9 +67,6 @@ app.post("/login", async (req, res) => {
       const userId = user.userid;
       const userFName = user.fname;
       const role = user.role;;
-      console.log("user id: " + userId); 
-      console.log("user role: " + role);
-      console.log("user name: " + userFName);
       // Compare user login password to stored hashed password
       bcrypt.compare(password, storedHashedPassword, (err, result) => {
         if (err){
@@ -95,10 +90,9 @@ app.post("/login", async (req, res) => {
 
 
 // ***** Register End Point *****
+// TODO: Send user role to database
 app.post("/register", async (req, res) => {
   const { email, password, fName, lName } = req.body;
-  console.log(email, password, fName, lName)
-
   try {
     const user = await db.query("SELECT * FROM users WHERE email = $1", [email]);
 
@@ -115,7 +109,6 @@ app.post("/register", async (req, res) => {
             "INSERT INTO users (fname, lname, email, password) VALUES ($1, $2, $3, $4)",
             [fName, lName, email, hash]
           )
-        console.log(result);
         res.json({ Status: 200 });
       }})
     }
@@ -128,7 +121,6 @@ app.post("/register", async (req, res) => {
 // ***** Add Message End Point *****
 app.post("/message/add", async (req, res) => {
   const { title, content} = req.body;
-  console.log(title, " ||| " , content)
   try {
     const result = await db.query(
       // Insert message data into database
@@ -151,7 +143,6 @@ app.post("/message/delete", async (req, res) => {
       "DELETE FROM messageboard WHERE title = $1",
       [title]
     )
-    console.log(title);
     res.json({ Status: 200 });
   }catch (err) {
     console.log(err);
@@ -161,13 +152,11 @@ app.post("/message/delete", async (req, res) => {
 
 // ***** Retrieve Message End Point *****
 
-// TODO: Retrieve messages from database
 app.post("/message/all", async (req, res) => {
   try {
     const result = await db.query("SELECT * FROM messageboard");
     if (result.rows.length > 0) {
       const allMessages = result.rows;
-      console.log(allMessages);
       res.json({ Status: 200, data: allMessages });
     }else{
       res.json({ Status: 201, data: "No messages"});
@@ -176,6 +165,12 @@ app.post("/message/all", async (req, res) => {
     console.log(err);
   }
 })
+
+// TODO: Endpoint to add user roles to database
+
+// TODO: End point to search user roles in database
+
+// TODO: Update user roles in database
 
 
 app.listen(port, () => {

@@ -16,30 +16,19 @@ import DrawerAppBar from '../components/DrawerAppBar';
 import Footer from '../components/Footer';
 import axios from 'axios';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Jordan Kelsey
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 const defaultTheme = createTheme({
     palette: {
         mode: 'dark',
     },
 });
 
+// TODO: Pass user role when hitting end point
+
 
 export default function register() {
   const context = useOutletContext()
 
-  // TODO: Manage all state within one objects
+  
   // Manage state
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -57,7 +46,20 @@ export default function register() {
 
       if (response.status === 200) {
         // If successful navigate to home
-        console.log("Registration: ", response.data);
+        try {
+          // Hit server login end point
+          const response = await axios.post("http://localhost:3000/login", { email, password });
+    
+          if (response.status === 200) {
+            console.log("Login successful");
+            !context.user && context.loginUser(response.data.id, response.data.userName, response.data.role);
+            navigate('/')
+          } else {
+            console.log("Unexpected response:", response);
+          }
+        } catch (error) {
+          console.error("Login failed:", error);
+        }
         navigate('/');
       } else {
         console.log("Unexpected response:", response);
