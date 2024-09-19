@@ -136,10 +136,10 @@ export default function register() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <FormControlLabel
+                {/* <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
                   label="I want to receive inspiration, marketing promotions and updates via email."
-                />
+                /> */}
               </Grid>
             </Grid>
             <Button
@@ -159,7 +159,7 @@ export default function register() {
             </Grid>
           </Box>
         </Box>
-        <Footer />
+        <Footer sx={{mt: '18vh'}} />
       </Container>
     </ThemeProvider>
   );

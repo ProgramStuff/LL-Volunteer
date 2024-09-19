@@ -39,14 +39,31 @@ export default function Profile() {
     // Manage state 
     const [role1, setRole1] = useState("");
     const [role2, setRole2] = useState("");
+    const [chosenRole1, setChosenRole1] = useState("");
+    const [chosenRole2, setChosenRole2] = useState("");
+    const userid = context.user.id;
 
-  
     async function handleSubmit(event) {
+      
       event.preventDefault();
+      //   TODO: Conditionally render chosen roles
 
+      try {
+        // Hit role insert end point
+        const response = await axios.post("http://localhost:3000/role/add", {userid: userid, role1: role1, role2: role2});
+        if (response.status === 200) {
+          console.log("Insert successful");
+          setChosenRole1(response.role1);
+          setChosenRole2(response.role2);
+        } else {
+          console.log("Unexpected response:", response);
+        }
+      } catch (error) {
+        console.error("Insert failed:", error);
+      }
     }
   
-//   TODO: Hit endpoint for role info and display
+
     return (
       <ThemeProvider theme={defaultTheme}>
         <Container component="main" maxWidth="xs">
@@ -74,13 +91,14 @@ export default function Profile() {
                     id="demo-simple-select"
                     value={role1}
                     label="Role"
+                    required
                     onChange={(e) => setRole1(e.target.value)}
                 >
-                    <MenuItem value={1}>Referee</MenuItem>
-                    <MenuItem value={2}>Judge</MenuItem>
-                    <MenuItem value={3}>Pit Runner</MenuItem>
-                    <MenuItem value={4}>Score Keeper</MenuItem>
-                    <MenuItem value={5}>Floater</MenuItem>
+                    <MenuItem value={"Referee"}>Referee</MenuItem>
+                    <MenuItem value={"Judge"}>Judge</MenuItem>
+                    <MenuItem value={"Pit Runner"}>Pit Runner</MenuItem>
+                    <MenuItem value={"Score Keeper"}>Score Keeper</MenuItem>
+                    <MenuItem value={"Floater"}>Floater</MenuItem>
                 </Select>
               </FormControl>
   
@@ -92,13 +110,14 @@ export default function Profile() {
                     id="demo-simple-select"
                     value={role2}
                     label="Role"
+                    required
                     onChange={(e) => setRole2(e.target.value)}
                 >
-                    <MenuItem value={1}>Referee</MenuItem>
-                    <MenuItem value={2}>Judge</MenuItem>
-                    <MenuItem value={3}>Pit Runner</MenuItem>
-                    <MenuItem value={4}>Score Keeper</MenuItem>
-                    <MenuItem value={5}>Floater</MenuItem>
+                    <MenuItem value={"Referee"}>Referee</MenuItem>
+                    <MenuItem value={"Judge"}>Judge</MenuItem>
+                    <MenuItem value={"Pit Runner"}>Pit Runner</MenuItem>
+                    <MenuItem value={"Score Keeper"}>Score Keeper</MenuItem>
+                    <MenuItem value={"Floater"}>Floater</MenuItem>
                 </Select>
               </FormControl>
               <Button
@@ -106,16 +125,11 @@ export default function Profile() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                onSubmit={{handleSubmit}}
               >
                 Confirm
               </Button>
-              <Grid container>
-                <Grid item xs>
-                </Grid>
-                <Grid item>
-                </Grid>
-              </Grid>
-
+              {/* TODO: Conditionally render selected roles */}
             </Box>
             </CardContent>
             </Card>

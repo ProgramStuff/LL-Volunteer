@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
 import session from "express-session";
@@ -166,9 +166,54 @@ app.post("/message/all", async (req, res) => {
   }
 })
 
-// TODO: Endpoint to add user roles to database
+// ***** Add/Update Role End Point *****
 
-// TODO: End point to search user roles in database
+app.post("/role/add", async (req, res) => {
+  const { userid, role1, role2} = req.body;
+
+  try {
+    const result = await db.query(
+      // Check if user row already exist
+      "SELECT * FROM uservolunteer where userid = $1", [userid])
+      if (result.rows.length > 0){
+        const result = await db.query(
+          // Update user row
+          "UPDATE uservolunteer SET role1 = $2, role2 = $3 WHERE userid = $1", 
+          [userid, role1, role2])
+          res.json({ Status: 200, role1: role1, role2: role2 });
+      } else{
+        try {
+          const result = await db.query(
+            // Insert volunteer roles
+            "INSERT INTO uservolunteer (userid, role1, role2) VALUES ($1, $2, $3)",
+            [userid, role1, role2]
+          )
+          res.json({ Status: 200, role1: role1, role2: role2 });
+        }catch (err) {
+          console.log(err);
+        }
+      }
+  }catch (err) {
+    console.log(err);
+  }
+})
+
+// TODO: Pass user fname and lname to front end
+app.post("/role/all", async (req, res) => {
+  const {role} = req.body;
+  try {
+    const result = await db.query(
+      // I
+      "SELECT users.userid, fname, lname, role1, role2 FROM users RIGHT JOIN uservolunteer ON users.userid = uservolunteer.userid WHERE uservolunteer.role1 = $1 or uservolunteer.role2 = $1",
+      [role]
+    )
+    const data = result.rows;
+    console.log(data)
+    res.json({ Status: 200, data: data});
+  }catch (err) {
+    console.log(err);
+  }
+})
 
 // TODO: Update user roles in database
 
