@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
 import session from "express-session";
@@ -106,8 +106,8 @@ app.post("/register", async (req, res) => {
         }else {
           const result = await db.query(
             // Insert user data and hashed password
-            "INSERT INTO users (fname, lname, email, password) VALUES ($1, $2, $3, $4)",
-            [fName, lName, email, hash]
+            "INSERT INTO users (fname, lname, email, password, role) VALUES ($1, $2, $3, $4, $5)",
+            [fName, lName, email, hash, "user"]
           )
         res.json({ Status: 200 });
       }})
@@ -166,12 +166,84 @@ app.post("/message/all", async (req, res) => {
   }
 })
 
-// TODO: Endpoint to add user roles to database
+// ***** Add/Update Role End Point *****
 
-// TODO: End point to search user roles in database
+app.post("/role/add", async (req, res) => {
+  const { userid, role1, role2} = req.body;
+
+  try {
+    const result = await db.query(
+      // Check if user row already exist
+      "SELECT * FROM uservolunteer where userid = $1", [userid])
+      if (result.rows.length > 0){
+        const result = await db.query(
+          // Update user row
+          "UPDATE uservolunteer SET role1 = $2, role2 = $3 WHERE userid = $1", 
+          [userid, role1, role2])
+          res.json({ Status: 200, role1: role1, role2: role2 });
+      } else{
+        try {
+          const result = await db.query(
+            // Insert volunteer roles
+            "INSERT INTO uservolunteer (userid, role1, role2) VALUES ($1, $2, $3)",
+            [userid, role1, role2]
+          )
+          res.json({ Status: 200, role1: role1, role2: role2 });
+        }catch (err) {
+          console.log(err);
+        }
+      }
+  }catch (err) {
+    console.log(err);
+  }
+})
+
+// TODO: Pass user fname and lname to front end
+app.post("/role/all", async (req, res) => {
+  const {role} = req.body;
+  try {
+    const result = await db.query(
+      // I
+      "SELECT users.userid, fname, lname, role1, role2 FROM users RIGHT JOIN uservolunteer ON users.userid = uservolunteer.userid WHERE uservolunteer.role1 = $1 or uservolunteer.role2 = $1",
+      [role]
+    )
+    const data = result.rows;
+    res.json({ Status: 200, data: data});
+  }catch (err) {
+    console.log(err);
+  }
+})
 
 // TODO: Update user roles in database
+app.post("/role/update", async (req, res) => {
+  const {userid, role} = req.body;
+  console.log(userid, role)
+  try {
+    const result = await db.query(
+      // I
+      "UPDATE uservolunteer SET role1 = $2, role2 = NULL WHERE userid = $1",
+      [userid, role]
+    )
+    res.json({ Status: 200});
+  }catch (err) {
+    console.log(err);
+  }
+})
 
+app.post("/role", async (req, res) => {
+  const {userid} = req.body;
+  try {
+    const result = await db.query(
+      // I
+      "SELECT * from uservolunteer WHERE userid = $1",
+      [userid]
+    )
+    const data = result.rows;
+    res.json({ Status: 200, data: data});
+  }catch (err) {
+    console.log(err);
+  }
+})
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

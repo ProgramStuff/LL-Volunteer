@@ -90,10 +90,10 @@ export default function Login() {
               autoComplete="current-password"
               onChange={(e) => setPassword(e.target.value)}
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
+            /> */}
             <Button
               type="submit"
               fullWidth
@@ -118,7 +118,7 @@ export default function Login() {
             </Grid>
           </Box>
         </Box>
-        <Footer />
+        <Footer sx={{mt: '27vh'}} />
       </Container>
     </ThemeProvider>
   );

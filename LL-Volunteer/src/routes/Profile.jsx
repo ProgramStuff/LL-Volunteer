@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -39,14 +39,56 @@ export default function Profile() {
     // Manage state 
     const [role1, setRole1] = useState("");
     const [role2, setRole2] = useState("");
+    const [chosenRole1, setChosenRole1] = useState("");
+    const [chosenRole2, setChosenRole2] = useState("");
+    const [selectedRoles, setSelectedRoles] = useState("");
+    const [roleStatus, setRoleStatus] = useState("");
+    const userid = context.user.id;
 
-  
     async function handleSubmit(event) {
+      
       event.preventDefault();
+      //   TODO: Conditionally render chosen roles and confirmed roles
 
+      try {
+        // Hit role insert end point
+        const response = await axios.post("http://localhost:3000/role/add", {userid: userid, role1: role1, role2: role2});
+        if (response.status === 200) {
+          console.log("Insert successful");
+          setChosenRole1(response.role1);
+          setChosenRole2(response.role2);
+          getRoles()
+        } else {
+          console.log("Unexpected response:", response);
+        }
+      } catch (error) {
+        console.error("Insert failed:", error);
+      }
+    }
+
+    async function getRoles() {
+      try {
+        // Hit message insert end point
+        const response = await axios.post("http://localhost:3000/role", {userid: userid});
+        if (response.status === 200) {
+          const userRoles = response.data.data[0];
+          console.log(userRoles);
+          setSelectedRoles(userRoles)
+          console.log("Load successful");
+          return response.data.data;
+        } else {
+          console.log("Unexpected response:", response);
+        }
+      } catch (error) {
+        console.error("Load failed:", error);
+      }
     }
   
-//   TODO: Hit endpoint for role info and display
+    useEffect(() =>{
+      getRoles();
+    },[])
+  
+
     return (
       <ThemeProvider theme={defaultTheme}>
         <Container component="main" maxWidth="xs">
@@ -59,10 +101,13 @@ export default function Profile() {
               alignItems: 'center',
             }}
           >
+            <Typography sx={{textAlign: 'center',fontSize: '4vh'}} component="h1" variant="h5">
+            Welcome {context.user.username}
+            </Typography>
             <Card variant='outlined' sx={{ minWidth: 275}}>
             <CardContent>
-            <Typography sx={{ml: 13}} component="h1" variant="h5">
-            Welcome {context.user.username}
+            <Typography sx={{textAlign: 'center', fontSize: '2vh'}} component="h2" variant="h5">
+              Select your roles
             </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ width: 400, mt: 1 }}>
               {/* Selection for volunteer type */}
@@ -74,13 +119,14 @@ export default function Profile() {
                     id="demo-simple-select"
                     value={role1}
                     label="Role"
+                    required
                     onChange={(e) => setRole1(e.target.value)}
                 >
-                    <MenuItem value={1}>Referee</MenuItem>
-                    <MenuItem value={2}>Judge</MenuItem>
-                    <MenuItem value={3}>Pit Runner</MenuItem>
-                    <MenuItem value={4}>Score Keeper</MenuItem>
-                    <MenuItem value={5}>Floater</MenuItem>
+                    <MenuItem value={"Referee"}>Referee</MenuItem>
+                    <MenuItem value={"Judge"}>Judge</MenuItem>
+                    <MenuItem value={"Pit Runner"}>Pit Runner</MenuItem>
+                    <MenuItem value={"Score Keeper"}>Score Keeper</MenuItem>
+                    <MenuItem value={"Floater"}>Floater</MenuItem>
                 </Select>
               </FormControl>
   
@@ -92,13 +138,14 @@ export default function Profile() {
                     id="demo-simple-select"
                     value={role2}
                     label="Role"
+                    required
                     onChange={(e) => setRole2(e.target.value)}
                 >
-                    <MenuItem value={1}>Referee</MenuItem>
-                    <MenuItem value={2}>Judge</MenuItem>
-                    <MenuItem value={3}>Pit Runner</MenuItem>
-                    <MenuItem value={4}>Score Keeper</MenuItem>
-                    <MenuItem value={5}>Floater</MenuItem>
+                    <MenuItem value={"Referee"}>Referee</MenuItem>
+                    <MenuItem value={"Judge"}>Judge</MenuItem>
+                    <MenuItem value={"Pit Runner"}>Pit Runner</MenuItem>
+                    <MenuItem value={"Score Keeper"}>Score Keeper</MenuItem>
+                    <MenuItem value={"Floater"}>Floater</MenuItem>
                 </Select>
               </FormControl>
               <Button
@@ -106,21 +153,37 @@ export default function Profile() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                onSubmit={{handleSubmit}}
               >
                 Confirm
               </Button>
-              <Grid container>
-                <Grid item xs>
-                </Grid>
-                <Grid item>
-                </Grid>
-              </Grid>
-
+              {/* TODO: Conditionally render selected roles */}
             </Box>
+
+
             </CardContent>
             </Card>
+
+            {selectedRoles != "" &&           
+            <Card variant='outlined' sx={{mt: '2vh', minWidth: '40vh'}}>
+                {selectedRoles.role2 != null ? 
+                <CardContent>
+                <Typography sx={{textAlign: 'center', fontSize: '2vh', mb: '2vh'}}>Roles Waiting for Approval</Typography>
+                <Typography sx={{fontSize: '2vh', mb: '2vh'}}>Role Choice 1 |  {selectedRoles.role1}</Typography>
+                <Typography sx={{fontSize: '2vh', mb: '2vh'}}>Role Choice 2 |  {selectedRoles.role2}</Typography>
+                </CardContent>
+                :
+                <CardContent>
+                <Typography sx={{textAlign: 'center', fontSize: '2vh', mb: '2vh'}}>Approved</Typography>
+                <Typography sx={{fontSize: '2vh', mb: '2vh'}}>Approved Role |  {selectedRoles.role1}</Typography>
+                </CardContent>
+              }
+            </Card>
+            }
+  
+
           </Box>
-          <Footer />
+          <Footer sx={{mt: '12vh'}}/>
         </Container>
       </ThemeProvider>
     );

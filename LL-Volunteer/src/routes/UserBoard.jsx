@@ -9,6 +9,8 @@ import CreateArea from "../components/CreateArea.jsx";
 import "../assets/styles/board.css"
 import { useOutletContext } from "react-router-dom";
 import axios from 'axios';
+import Typography from '@mui/material/Typography';
+
 
 
 const darkTheme = createTheme({
@@ -57,6 +59,9 @@ export default function UserBoard() {
     <ThemeProvider theme={darkTheme}>
     <Container>
       <CssBaseline />
+      <Typography sx={{textAlign: 'center',fontSize: '4vh'}} component="h1" variant="h5">
+        Message Board
+      </Typography>
 
       {notes.map((noteItem, index) => {
         return (
