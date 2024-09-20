@@ -29,6 +29,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import RadioGroup from '@mui/material/RadioGroup';
+import Radio from '@mui/material/Radio';
+
+
+
 
 
 const defaultTheme = createTheme({
@@ -45,12 +50,16 @@ export default function Admin() {
     const navigate = useNavigate();
     const [role, setRole] = useState("");
     const [allRoles, setAllRoles] = useState("");
+    const [userRole, setUserRole] = useState({
+      userid: "",
+      role: ""
+    });
 
   
     async function handleSubmit(event) {
+      // Retrieve volunteer role info and update state
       
       event.preventDefault();
-      //   TODO: Endpoint to retrieve role info
 
       try {
         // Hit role insert end point
@@ -66,8 +75,38 @@ export default function Admin() {
         console.error("Request failed:", error);
       }
     }
-  
-//   TODO: Hit endpoint to search for role info
+
+    async function handleClick(event) {
+      // Send confirmed role to update endpoint
+      event.preventDefault();
+      const userid = userRole.userid
+      const role = userRole.role
+      try {
+        // Hit role insert end point
+        const response = await axios.post("http://localhost:3000/role/update", {userid: userid, role: role});
+        if (response.status === 200) {
+          console.log("Request successful");
+          console.log(response.status);
+        } else {
+          console.log("Unexpected response:", response);
+        }
+      } catch (error) {
+        console.error("Request failed:", error);
+      }
+
+    }
+    
+    function handleChange(event) {
+      const [userid, role] = event.target.value.split(':'); // Split value into userid and role
+      console.log(userid)
+      setUserRole(prevState => ({
+        ...prevState,
+        userid: userid, // Update userid
+        role: role      // Update role
+      }));
+
+    }
+
     return (
       <ThemeProvider theme={defaultTheme}>
         <Container component="main" maxWidth="xs">
@@ -124,6 +163,8 @@ export default function Admin() {
 
  
             {allRoles == "" ? null : 
+                <FormControl>
+                  <RadioGroup sx={{padding: 0, margin: 0}}>
                   <TableContainer sx={{minWidth: '90vh', mt: '3vh'}} component={Paper}>
                   <Table sx={{ minWidth: '80vh' }} aria-label="simple table">
                     <TableHead sx={{backgroundColor: 'black'}}>
@@ -134,39 +175,43 @@ export default function Admin() {
                         <TableCell align="right">Approve</TableCell>
                       </TableRow>
                     </TableHead>
-                    <TableBody>
+                    <TableBody sx={{'&:last-child td, &:last-child th': {border: 0}}}>
+
+                        
                   {allRoles.map((single, index) => {
                     return(
-
                       <TableRow
                       key={single.userid}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                       <TableCell component="th" scope="row">
                         {single.fname} {single.lname}
                       </TableCell>
 
-                      <TableCell align="right">{single.role1}
-                        <Checkbox
-                          color="primary"
-                          checked={console.log("checked")}
-                        />
+                      <TableCell align="right">
+                      <FormControlLabel value={`${single.userid}:${single.role1}`} control={single.role2 != null ? <Radio /> : <> </>} onChange={handleChange} label={single.role1}/>
                       </TableCell>
-                      
-                      <TableCell align="right">{single.role2}
-                      <Checkbox
-                          color="primary"
-                          checked={console.log("checked")}
-                        />
+                      {single.role2 != null &&   
+                      <>              
+                      <TableCell align="right">
+                        <FormControlLabel value={`${single.userid}:${single.role2}`} control={<Radio />} onChange={handleChange} label={single.role2}/>
                       </TableCell>
-                      <TableCell align="right">A button here</TableCell>
+                      <TableCell align="right">
+                      <Button onClick={handleClick}>Confirm</Button>
+                      </TableCell>
+                      </>
+                      }
+      
+            
                     </TableRow>
-
+           
                     )
                   })}
                       </TableBody>
                     </Table>
                   </TableContainer>
+                  </RadioGroup>
+                </FormControl>
+
             }
 
             {/* TODO: Create container for user roles */}

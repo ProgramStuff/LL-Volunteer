@@ -208,7 +208,6 @@ app.post("/role/all", async (req, res) => {
       [role]
     )
     const data = result.rows;
-    console.log(data)
     res.json({ Status: 200, data: data});
   }catch (err) {
     console.log(err);
@@ -216,6 +215,20 @@ app.post("/role/all", async (req, res) => {
 })
 
 // TODO: Update user roles in database
+app.post("/role/update", async (req, res) => {
+  const {userid, role} = req.body;
+  console.log(userid, role)
+  try {
+    const result = await db.query(
+      // I
+      "UPDATE uservolunteer SET role1 = $2, role2 = NULL WHERE userid = $1",
+      [userid, role]
+    )
+    res.json({ Status: 200});
+  }catch (err) {
+    console.log(err);
+  }
+})
 
 
 app.listen(port, () => {
