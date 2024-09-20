@@ -216,7 +216,7 @@ export default function Admin() {
 
             {/* TODO: Create container for user roles */}
           </Box>
-          <Footer />
+          <Footer sx={{mt: '30vh'}}/>
         </Container>
       </ThemeProvider>
     );

@@ -106,8 +106,8 @@ app.post("/register", async (req, res) => {
         }else {
           const result = await db.query(
             // Insert user data and hashed password
-            "INSERT INTO users (fname, lname, email, password) VALUES ($1, $2, $3, $4)",
-            [fName, lName, email, hash]
+            "INSERT INTO users (fname, lname, email, password, role) VALUES ($1, $2, $3, $4, $5)",
+            [fName, lName, email, hash, "user"]
           )
         res.json({ Status: 200 });
       }})
@@ -230,6 +230,20 @@ app.post("/role/update", async (req, res) => {
   }
 })
 
+app.post("/role", async (req, res) => {
+  const {userid} = req.body;
+  try {
+    const result = await db.query(
+      // I
+      "SELECT * from uservolunteer WHERE userid = $1",
+      [userid]
+    )
+    const data = result.rows;
+    res.json({ Status: 200, data: data});
+  }catch (err) {
+    console.log(err);
+  }
+})
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
