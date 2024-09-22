@@ -1,21 +1,14 @@
 import React, { useState } from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import { Link, useNavigate, useOutletContext } from "react-router-dom";
-import Grid from '@mui/material/Grid';
+import { useNavigate, useOutletContext } from "react-router-dom";
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import DrawerAppBar from '../components/DrawerAppBar';
 import Footer from '../components/Footer';
 import axios from 'axios';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
@@ -67,7 +60,6 @@ export default function Admin() {
         if (response.status === 200) {
           console.log("Request successful");
           setAllRoles(response.data.data);
-          console.log(response.data.data);
         } else {
           console.log("Unexpected response:", response);
         }
@@ -86,7 +78,6 @@ export default function Admin() {
         const response = await axios.post("http://localhost:3000/role/update", {userid: userid, role: role});
         if (response.status === 200) {
           console.log("Request successful");
-          console.log(response.status);
         } else {
           console.log("Unexpected response:", response);
         }
@@ -98,7 +89,6 @@ export default function Admin() {
     
     function handleChange(event) {
       const [userid, role] = event.target.value.split(':'); // Split value into userid and role
-      console.log(userid)
       setUserRole(prevState => ({
         ...prevState,
         userid: userid, // Update userid

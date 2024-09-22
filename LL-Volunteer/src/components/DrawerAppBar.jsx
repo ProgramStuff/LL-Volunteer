@@ -49,7 +49,7 @@ export default function DrawerAppBar(props) {
       </Typography>
       <Divider />
       <List>
-        {/* Render only "Home", and conditionally "Register"/"Login" if not logged in */}
+        {/* Render only Home, and conditionally Register Login if not logged in */}
         <ListItem disablePadding>
           <ListItemButton sx={{ textAlign: 'center' }}>
             <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
@@ -58,7 +58,7 @@ export default function DrawerAppBar(props) {
           </ListItemButton>
         </ListItem>
 
-        {/* Conditionally show "Register" and "Login" if no user is logged in */}
+        {/* Conditionally show Register and Login if no user is logged in */}
         {!user && (
           <>
             <ListItem disablePadding>
@@ -79,7 +79,7 @@ export default function DrawerAppBar(props) {
           </>
         )}
 
-        {/* Conditionally show "Profile" and "Logout" if user is logged in */}
+        {/* Conditionally show Profile and Logout if user is logged in */}
         {user && (
           <>
             <ListItem disablePadding>
@@ -90,7 +90,7 @@ export default function DrawerAppBar(props) {
               </ListItemButton>
             </ListItem>
 
-            {/* Conditionally show "Admin" or "Board" if user is an admin */}
+            {/* Conditionally show Admin or Board if user is an admin */}
             {user.role === "admin" && (
               <ListItem disablePadding>
                 <ListItemButton sx={{ textAlign: 'center' }}>

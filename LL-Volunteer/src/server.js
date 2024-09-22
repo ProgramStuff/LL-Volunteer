@@ -217,7 +217,6 @@ app.post("/role/all", async (req, res) => {
 // TODO: Update user roles in database
 app.post("/role/update", async (req, res) => {
   const {userid, role} = req.body;
-  console.log(userid, role)
   try {
     const result = await db.query(
       // I
