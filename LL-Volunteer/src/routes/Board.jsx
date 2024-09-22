@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import DrawerAppBar from "../components/DrawerAppBar";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Footer from "../components/Footer";

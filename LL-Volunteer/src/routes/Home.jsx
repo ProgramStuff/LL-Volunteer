@@ -1,7 +1,6 @@
 import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import DrawerAppBar from '../components/DrawerAppBar';
 import { Container, Typography } from '@mui/material';
 import Footer from '../components/Footer';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -17,12 +16,6 @@ const darkTheme = createTheme({
   },
 });
 
-// TODO: Add GitHub and Linkedin to footer
-// TODO: Style imported code and add images
-// TODO: Use MUI icons on home page
-// TODO: Create separate jsx file for volunteer information page
-// TODO: Create PostgreSQL database for volunteer info
-// TODO: Create admin page for creating and updating posts - View current volunteers
 
 
 export default function Home() {
@@ -40,7 +33,7 @@ export default function Home() {
 
           
           <article id="art3">
-              <img src="/LegoPlaceholder1.png" alt="Lego Blocks" width="25%"/>
+              <img src="/LegoPlaceholder1.png" alt="Lego Blocks" width="35%"/>
           </article>
 
           <article id="art2">
@@ -64,7 +57,7 @@ export default function Home() {
 
               <section className="artSection">
                   <GridViewRoundedIcon fontSize='large' />
-                  <a className="links" href="https://www.firstinspires.org/">First Lego Lego</a>
+                  <a className="links" href="https://www.firstinspires.org/">First Lego League</a>
                   <p>Click here to learn more about First Lego League</p>
               </section>
           </article>
