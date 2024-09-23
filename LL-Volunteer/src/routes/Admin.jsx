@@ -151,7 +151,8 @@ export default function Admin() {
             </Card>
 
 
- 
+
+            {/* Only show radial buttons if more than 1 volunteer role */}
             {allRoles == "" ? null : 
                 <FormControl>
                   <RadioGroup sx={{padding: 0, margin: 0}}>
@@ -167,7 +168,8 @@ export default function Admin() {
                     </TableHead>
                     <TableBody sx={{'&:last-child td, &:last-child th': {border: 0}}}>
 
-                        
+ {/* Map though role and display them in a table with user names to confirm */}
+
                   {allRoles.map((single, index) => {
                     return(
                       <TableRow

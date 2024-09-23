@@ -1,238 +1,307 @@
-import express, { response } from "express";
+import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
 import session from "express-session";
 import bcrypt from "bcrypt";
 import env from "dotenv";
 import cors from "cors";
+import passport from "passport";
+import { Strategy as LocalStrategy } from "passport-local";
+import path from 'path';
+import { createPool } from '@vercel/postgres';
 
 
 const app = express();
-const port = 3000;
 const saltRounds = 10;
 env.config();
+const secret = process.env.SESSION_SECRET
+const port = process.env.PORT || 3000;
 
+
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Body-parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// CORS
 app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: process.env.NODE_ENV === 'production' }
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://ll-volunteer-ihjcxz9a1-jordan-kelseys-projects.vercel.app",
+      "https://ll-volunteer.vercel.app",
+      "https://ll-volunteer.vercel.app/resgister",
+      "https://ll-volunteer.vercel.app/login",
+      "https://ll-volunteer-ihjcxz9a1-jordan-kelseys-projects.vercel.app/resgister",
+      "https://ll-volunteer-ihjcxz9a1-jordan-kelseys-projects.vercel.app/login",
+    ],
+    methods: ["POST", "GET"],
+    credentials: true,
   })
 );
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('dist'));
 
-app.use(cors( {
-  origin: ["http://localhost:5173"],
-  methods: ["POST, GET"],
-  credentials: true
-}))
-
-
-// TODO: Review passport documentation/implement cookies
-// TODO: Use passport to persist use login
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
+  });
+}
 
 
-const db = new pg.Client({
-  user: process.env.PG_USER,
-  host: process.env.PG_HOST,
-  database: process.env.PG_DATABASE,
-  password: process.env.PG_PASSWORD,
-  port: process.env.PG_PORT,
+// Express Session
+app.use(
+  session({
+    secret: secret,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: isProduction },
+  })
+);
+
+// Initialize Passport.js and sessions
+app.use(passport.initialize());
+app.use(passport.session());
+
+// PostgreSQL Pool setup
+// const pool = new pg.Pool({
+//   connectionString: process.env.POSTGRES_URL,
+//   ssl: { rejectUnauthorized: false },
+// });
+
+const pool = createPool({
+  user: process.env.POSTGRES_USER,
+  host: process.env.POSTGRES_HOST,
+  database: process.env.POSTGRES_DATABASE,
+  password: process.env.POSTGRES_PASSWORD,
+  connectionString: process.env.POSTGRES_URL,
+  ssl: { rejectUnauthorized: false },
 });
 
-db.connect(err => {
-  if (err) {
-    console.error('Database connection error', err.stack);
-  } else {
-    console.log('Connected to the database');
+// const pool = new pg.Pool({
+//   user: process.env.PG_USER,
+//   host: process.env.PG_HOST,
+//   database: process.env.PG_DATABASE,
+//   password: process.env.PG_PASSWORD,
+//   port: process.env.PG_PORT,
+// });
+
+
+
+// Helper function to handle database queries
+const queryDB = async (text, params) => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(text, params);
+    return result;
+  } finally {
+    client.release(); // Release the client back to the pool
+  }
+};
+
+// ***** Passport Local Strategy *****
+passport.use(
+  new LocalStrategy(
+    {
+      usernameField: "email",
+      passwordField: "password",
+    },
+    async (email, password, done) => {
+      try {
+        const result = await queryDB("SELECT * FROM users WHERE email = $1", [email]);
+        if (result.rows.length === 0) {
+          return done(null, false, { message: "Incorrect email" });
+        }
+        const user = result.rows[0];
+        const storedHashedPassword = user.password;
+
+        // Compare password
+        bcrypt.compare(password, storedHashedPassword, (err, res) => {
+          if (err) return done(err);
+          if (res) {
+            return done(null, user); // Successful login
+          } else {
+            return done(null, false, { message: "Incorrect password" });
+          }
+        });
+      } catch (err) {
+        return done(err);
+      }
+    }
+  )
+);
+
+// Passport serializeUser and deserializeUser
+passport.serializeUser((user, done) => {
+  done(null, user.userid);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const result = await queryDB("SELECT * FROM users WHERE userid = $1", [id]);
+    done(null, result.rows[0]);
+  } catch (err) {
+    done(err);
   }
 });
 
-
-// ***** Login End Point *****
-
-app.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  try{
-    const result = await db.query("SELECT * FROM users WHERE email = $1", [email]);
-  // Fetch the user from the database
-
-    if (result.rows.length > 0) {
-      const user = result.rows[0];
-      const storedHashedPassword = user.password;
-      const userId = user.userid;
-      const userFName = user.fname;
-      const role = user.role;;
-      // Compare user login password to stored hashed password
-      bcrypt.compare(password, storedHashedPassword, (err, result) => {
-        if (err){
-          console.log(err);
-        }else {
-          if (result){
-            console.log("successful Login")
-            res.json({status:200, id: userId, userName: userFName, role: role});
-          }else{
-            console.log("Incorrect Login")
-          }
-        }
-      });
-    }else{
-      console.log("User not found")
-      }
-    } catch(err) {
-      console.log(err);
-    }
+// ***** Login End Point with Passport *****
+app.post("/login", passport.authenticate("local"), (req, res) => {
+  const user = req.user;
+  res.json({
+    status: 200,
+    id: user.userid,
+    userName: user.fname,
+    role: user.role,
+  });
 });
 
-
 // ***** Register End Point *****
-// TODO: Send user role to database
 app.post("/register", async (req, res) => {
   const { email, password, fName, lName } = req.body;
   try {
-    const user = await db.query("SELECT * FROM users WHERE email = $1", [email]);
+    // Check if the user already exists
+    const user = await queryDB("SELECT * FROM users WHERE email = $1", [email]);
 
-    if (user.rows.length > 0){
-      res.send("Email already exists. Try logging in");
-    }else {
-      // If email does not exist hash  password and add 10 salt rounds before storing
-      bcrypt.hash(password, saltRounds, async (err, hash) =>{
-        if (err){
+    if (user.rows.length > 0) {
+      return res.status(400).json({ message: "Email already exists. Try logging in." });
+    } else {
+      // Hash the password
+      bcrypt.hash(password, saltRounds, async (err, hash) => {
+        if (err) {
           console.log("Error hashing password", err);
-        }else {
-          const result = await db.query(
-            // Insert user data and hashed password
-            "INSERT INTO users (fname, lname, email, password, role) VALUES ($1, $2, $3, $4, $5)",
+          return res.status(500).json({ message: "Error during registration." });
+        } else {
+          // Insert the new user into the "users" table and return the userid
+          const insertUserResult = await queryDB(
+            "INSERT INTO users (fname, lname, email, password, role) VALUES ($1, $2, $3, $4, $5) RETURNING userid",
             [fName, lName, email, hash, "user"]
-          )
-        res.json({ Status: 200 });
-      }})
-    }
-  }catch (err) {
-    console.log(err);
-  }
+          );
 
+          const newUserId = insertUserResult.rows[0].userid;
+
+          // Insert a new row in the "uservolunteer" table for the new user with role1 and role2 set to null
+          await queryDB(
+            "INSERT INTO uservolunteer (userid, role1, role2) VALUES ($1, $2, $3)",
+            [newUserId, null, null]
+          );
+
+          // Respond with success message
+          res.status(200).json({ message: "User registered successfully!" });
+        }
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal server error." });
+  }
+});
+
+
+// ***** Check if user is authenticated *****
+app.get("/user", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.json({ status: 200, user: req.user });
+  } else {
+    res.json({ status: 401, message: "User not logged in" });
+  }
+});
+
+// ***** Logout End Point *****
+app.post("/logout", (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.json({ status: 200, message: "Logged out successfully" });
+  });
 });
 
 // ***** Add Message End Point *****
 app.post("/message/add", async (req, res) => {
-  const { title, content} = req.body;
+  const { title, content } = req.body;
   try {
-    const result = await db.query(
-      // Insert message data into database
-      "INSERT INTO messageboard (title, content) VALUES ($1, $2)",
-      [title, content]
-    )
+    await queryDB("INSERT INTO messageboard (title, content) VALUES ($1, $2)", [title, content]);
     res.json({ Status: 200 });
-  }catch (err) {
+  } catch (err) {
     console.log(err);
   }
-})
+});
 
 // ***** Delete Message End Point *****
-// TODO: Modify to expect id
 app.post("/message/delete", async (req, res) => {
-  const title = req.body.title;
+  const { title } = req.body;
   try {
-    const result = await db.query(
-      // Delete message from database
-      "DELETE FROM messageboard WHERE title = $1",
-      [title]
-    )
+    await queryDB("DELETE FROM messageboard WHERE title = $1", [title]);
     res.json({ Status: 200 });
-  }catch (err) {
+  } catch (err) {
     console.log(err);
   }
-})
+});
 
-
-// ***** Retrieve Message End Point *****
-
+// ***** Retrieve All Messages End Point *****
 app.post("/message/all", async (req, res) => {
   try {
-    const result = await db.query("SELECT * FROM messageboard");
+    const result = await queryDB("SELECT * FROM messageboard");
     if (result.rows.length > 0) {
-      const allMessages = result.rows;
-      res.json({ Status: 200, data: allMessages });
-    }else{
-      res.json({ Status: 201, data: "No messages"});
+      res.json({ Status: 200, data: result.rows });
+    } else {
+      res.json({ Status: 201, data: "No messages" });
     }
-  }catch (err) {
+  } catch (err) {
     console.log(err);
   }
-})
+});
 
 // ***** Add/Update Role End Point *****
-
 app.post("/role/add", async (req, res) => {
-  const { userid, role1, role2} = req.body;
+  const { userid, role1, role2 } = req.body;
 
   try {
-    const result = await db.query(
-      // Check if user row already exist
-      "SELECT * FROM uservolunteer where userid = $1", [userid])
-      if (result.rows.length > 0){
-        const result = await db.query(
-          // Update user row
-          "UPDATE uservolunteer SET role1 = $2, role2 = $3 WHERE userid = $1", 
-          [userid, role1, role2])
-          res.json({ Status: 200, role1: role1, role2: role2 });
-      } else{
-        try {
-          const result = await db.query(
-            // Insert volunteer roles
-            "INSERT INTO uservolunteer (userid, role1, role2) VALUES ($1, $2, $3)",
-            [userid, role1, role2]
-          )
-          res.json({ Status: 200, role1: role1, role2: role2 });
-        }catch (err) {
-          console.log(err);
-        }
-      }
-  }catch (err) {
+    const result = await queryDB("SELECT * FROM uservolunteer WHERE userid = $1", [userid]);
+
+    if (result.rows.length > 0) {
+      await queryDB("UPDATE uservolunteer SET role1 = $2, role2 = $3 WHERE userid = $1", [userid, role1, role2]);
+      res.json({ Status: 200, role1, role2 });
+    } else {
+      await queryDB("INSERT INTO uservolunteer (userid, role1, role2) VALUES ($1, $2, $3)", [userid, role1, role2]);
+      res.json({ Status: 200, role1, role2 });
+    }
+  } catch (err) {
     console.log(err);
   }
-})
+});
 
-// TODO: Pass user fname and lname to front end
+// ***** Retrieve All Roles End Point *****
 app.post("/role/all", async (req, res) => {
-  const {role} = req.body;
+  const { role } = req.body;
   try {
-    const result = await db.query(
-      // I
-      "SELECT users.userid, fname, lname, role1, role2 FROM users RIGHT JOIN uservolunteer ON users.userid = uservolunteer.userid WHERE uservolunteer.role1 = $1 or uservolunteer.role2 = $1",
+    const result = await queryDB(
+      "SELECT users.userid, fname, lname, role1, role2 FROM users RIGHT JOIN uservolunteer ON users.userid = uservolunteer.userid WHERE uservolunteer.role1 = $1 OR uservolunteer.role2 = $1",
       [role]
-    )
-    const data = result.rows;
-    res.json({ Status: 200, data: data});
-  }catch (err) {
+    );
+    res.json({ Status: 200, data: result.rows });
+  } catch (err) {
     console.log(err);
   }
-})
+});
 
-// TODO: Update user roles in database
+// ***** Update User Role End Point *****
 app.post("/role/update", async (req, res) => {
-  const {userid, role} = req.body;
+  const { userid, role } = req.body;
   try {
-    const result = await db.query(
-      // I
-      "UPDATE uservolunteer SET role1 = $2, role2 = NULL WHERE userid = $1",
-      [userid, role]
-    )
-    res.json({ Status: 200});
-  }catch (err) {
+    await queryDB("UPDATE uservolunteer SET role1 = $2, role2 = NULL WHERE userid = $1", [userid, role]);
+    res.json({ Status: 200 });
+  } catch (err) {
     console.log(err);
   }
-})
+});
 
 app.post("/role", async (req, res) => {
   const {userid} = req.body;
   try {
-    const result = await db.query(
+    const result = await queryDB(
       // I
       "SELECT * from uservolunteer WHERE userid = $1",
       [userid]
