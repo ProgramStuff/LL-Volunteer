@@ -64,12 +64,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// PostgreSQL Pool setup
-// const pool = new pg.Pool({
-//   connectionString: process.env.POSTGRES_URL,
-//   ssl: { rejectUnauthorized: false },
-// });
-
 const pool = createPool({
   user: process.env.POSTGRES_USER,
   host: process.env.POSTGRES_HOST,
@@ -173,7 +167,7 @@ app.post("/register", async (req, res) => {
           console.log("Error hashing password", err);
           return res.status(500).json({ message: "Error during registration." });
         } else {
-          // Insert the new user into the "users" table and return the userid
+          // Insert the new user into the users table and return the userid
           const insertUserResult = await queryDB(
             "INSERT INTO users (fname, lname, email, password, role) VALUES ($1, $2, $3, $4, $5) RETURNING userid",
             [fName, lName, email, hash, "user"]
@@ -181,7 +175,7 @@ app.post("/register", async (req, res) => {
 
           const newUserId = insertUserResult.rows[0].userid;
 
-          // Insert a new row in the "uservolunteer" table for the new user with role1 and role2 set to null
+          // Insert a new row in the uservolunteer table for the new user with role1 and role2 set to null
           await queryDB(
             "INSERT INTO uservolunteer (userid, role1, role2) VALUES ($1, $2, $3)",
             [newUserId, null, null]
