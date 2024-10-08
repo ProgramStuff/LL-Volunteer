@@ -11,7 +11,7 @@ import path from 'path';
 import { createPool } from '@vercel/postgres';
 
 
-const app = express();
+const app = express("");
 const saltRounds = 10;
 env.config();
 const secret = process.env.SESSION_SECRET
