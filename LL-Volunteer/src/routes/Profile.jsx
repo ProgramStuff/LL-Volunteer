@@ -36,28 +36,20 @@ export default function Profile() {
     const [selectedRoles, setSelectedRoles] = useState("");
     const [roleStatus, setRoleStatus] = useState("");
     const userid = context.user.id;
-    
+
     async function handleSubmit(event) {
+      
       event.preventDefault();
-    
+      //   TODO: Conditionally render chosen roles and confirmed roles
+
       try {
-        // Determine the API URL based on the environment
-        const baseURL = import.meta.env.VITE_VERCEL_ENV === "production"
-          ? import.meta.env.VITE_PROD_URL
-          : "http://localhost:3000";
-    
-        // Hit role insert endpoint with the appropriate URL
-        const response = await axios.post(`${baseURL}/role/add`, {
-          userid: userid, 
-          role1: role1, 
-          role2: role2
-        });
-    
+        // Hit role insert end point
+        const response = await axios.post("http://localhost:3000/role/add", {userid: userid, role1: role1, role2: role2});
         if (response.status === 200) {
           console.log("Insert successful");
           setChosenRole1(response.role1);
           setChosenRole2(response.role2);
-          getRoles(); // Assuming this fetches roles after insertion
+          getRoles()
         } else {
           console.log("Unexpected response:", response);
         }
@@ -65,15 +57,11 @@ export default function Profile() {
         console.error("Insert failed:", error);
       }
     }
-    
 
     async function getRoles() {
       try {
-        const baseURL = import.meta.env.VITE_VERCEL_ENV === "production"
-        ? import.meta.env.VITE_PROD_URL
-        : "http://localhost:3000";
         // Hit message insert end point
-        const response = await axios.post(`${baseURL}/role`, {userid: userid});
+        const response = await axios.post("http://localhost:3000/role", {userid: userid});
         if (response.status === 200) {
           const userRoles = response.data.data[0];
           setSelectedRoles(userRoles)

@@ -36,38 +36,35 @@ export default function register() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-  
+
     try {
-      // Determine the API URL based on environment
-      const baseURL = import.meta.env.VITE_VERCEL_ENV === "production"
-        ? import.meta.env.VITE_PROD_URL
-        : "http://localhost:3000";
-  
-      // Hit the server registration endpoint
-      const registrationResponse = await axios.post(`${baseURL}/register`, { email, password, lName, fName });
-  
-      if (registrationResponse.status === 200) {
-        console.log("Registration successful");
-  
-        // After successful registration, automatically log in the user
-        const loginResponse = await axios.post(`${baseURL}/login`, { email, password });
-  
-        if (loginResponse.status === 200) {
-          console.log("Login successful");
-          // Update the context with user information if not already logged in
-          !context.user && context.loginUser(loginResponse.data.id, loginResponse.data.userName, loginResponse.data.role);
-          navigate('/');
-        } else {
-          console.log("Unexpected login response:", loginResponse);
+      // Hit sever registration end point
+      const response = await axios.post("http://localhost:3000/register", { email, password, lName, fName });
+
+      if (response.status === 200) {
+        // If successful navigate to home
+        try {
+          // Hit server login end point
+          const response = await axios.post("http://localhost:3000/login", { email, password });
+    
+          if (response.status === 200) {
+            console.log("Login successful");
+            !context.user && context.loginUser(response.data.id, response.data.userName, response.data.role);
+            navigate('/')
+          } else {
+            console.log("Unexpected response:", response);
+          }
+        } catch (error) {
+          console.error("Login failed:", error);
         }
+        navigate('/');
       } else {
-        console.log("Unexpected registration response:", registrationResponse);
+        console.log("Unexpected response:", response);
       }
     } catch (error) {
-      console.error("An error occurred:", error);
+      console.error("Registration failed:", error);
     }
   }
-  
 
   return (
     <ThemeProvider theme={defaultTheme}>

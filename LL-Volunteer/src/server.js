@@ -19,11 +19,6 @@ const port = process.env.PORT || 3000;
 
 
 const isProduction = process.env.NODE_ENV === 'production';
-const API_URL = process.env.NODE_ENV === 'production'
-  ? 'https://ll-volunteer.vercel.app'
-  : 'http://localhost:3000';
-
-// TODO: Change API endpoint to be dynamic on server and on client files
 
 // Body-parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));

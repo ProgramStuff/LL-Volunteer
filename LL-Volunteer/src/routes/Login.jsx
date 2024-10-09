@@ -31,13 +31,8 @@ export default function Login() {
     event.preventDefault();
 
     try {
-      // Determine the API URL based on environment
-      const baseURL = import.meta.env.VITE_VERCEL_ENV === "production"
-        ? import.meta.env.VITE_PROD_URL
-        : "http://localhost:3000";
-  
-      // Hit server login endpoint
-      const response = await axios.post(`${baseURL}/login`, { email, password });
+      // Hit server login end point
+      const response = await axios.post("http://localhost:3000/login", { email, password });
 
       if (response.status === 200) {
         console.log("Login successful");

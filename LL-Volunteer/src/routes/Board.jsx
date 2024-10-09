@@ -23,12 +23,8 @@ export default function Board() {
 
   async function loadNotes() {
     try {
-      const baseURL = import.meta.env.VITE_VERCEL_ENV === "production"
-        ? import.meta.env.VITE_PROD_URL
-        : "http://localhost:3000";
-  
       // Hit message insert end point
-      const response = await axios.post(`${baseURL}/message/all`);
+      const response = await axios.post("http://localhost:3000/message/all");
       if (response.status === 200) {
         const noteData = response.data.data;
 
@@ -54,12 +50,8 @@ export default function Board() {
 
   async function addNote(newNote) {
     try {
-      const baseURL = import.meta.env.VITE_VERCEL_ENV === "production"
-      ? import.meta.env.VITE_PROD_URL
-      : "http://localhost:3000";
-
       // Hit message insert end point
-      const response = await axios.post(`${baseURL}/message/add`, newNote);
+      const response = await axios.post("http://localhost:3000/message/add", newNote);
       if (response.status === 200) {
         setNotes(prevNotes => {
           return [...prevNotes, newNote];
@@ -75,11 +67,8 @@ export default function Board() {
 
   async function deleteNote(id, title) {
     try {
-      const baseURL = import.meta.env.VITE_VERCEL_ENV === "production"
-      ? import.meta.env.VITE_PROD_URL
-      : "http://localhost:3000";
       // Hit message insert end point
-      const response = await axios.post(`${baseURL}/message/delete`, {title: title});
+      const response = await axios.post("http://localhost:3000/message/delete", {title: title});
       if (response.status === 200) {
         setNotes(prevNotes => {
           return prevNotes.filter((noteItem, index) => {
