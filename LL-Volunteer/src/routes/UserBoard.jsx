@@ -25,7 +25,7 @@ export default function UserBoard() {
   async function loadNotes() {
     try {
       // Hit message insert end point
-      const response = await axios.post("http://localhost:3000/message/all");
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/message/all`);
       if (response.status === 200) {
         const noteData = response.data.data;
 

@@ -10,13 +10,11 @@ import { Strategy as LocalStrategy } from "passport-local";
 import path from 'path';
 import { createPool } from '@vercel/postgres';
 
-
 const app = express();
 const saltRounds = 10;
 env.config();
 const secret = process.env.SESSION_SECRET
 const port = process.env.PORT || 3000;
-
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -49,7 +47,6 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-
 // Express Session
 app.use(
   session({
@@ -80,8 +77,6 @@ const pool = createPool({
 //   password: process.env.PG_PASSWORD,
 //   port: process.env.PG_PORT,
 // });
-
-
 
 // Helper function to handle database queries
 const queryDB = async (text, params) => {
@@ -141,7 +136,7 @@ passport.deserializeUser(async (id, done) => {
 });
 
 // ***** Login End Point with Passport *****
-app.post("/login", passport.authenticate("local"), (req, res) => {
+app.post("/api/login", passport.authenticate("local"), (req, res) => {
   const user = req.user;
   res.json({
     status: 200,
@@ -152,7 +147,7 @@ app.post("/login", passport.authenticate("local"), (req, res) => {
 });
 
 // ***** Register End Point *****
-app.post("/register", async (req, res) => {
+app.post("/api/register", async (req, res) => {
   const { email, password, fName, lName } = req.body;
   try {
     // Check if the user already exists
@@ -192,7 +187,6 @@ app.post("/register", async (req, res) => {
   }
 });
 
-
 // ***** Check if user is authenticated *****
 app.get("/user", (req, res) => {
   if (req.isAuthenticated()) {
@@ -203,7 +197,7 @@ app.get("/user", (req, res) => {
 });
 
 // ***** Logout End Point *****
-app.post("/logout", (req, res, next) => {
+app.post("/api/logout", (req, res, next) => {
   req.logout((err) => {
     if (err) {
       return next(err);
@@ -213,7 +207,7 @@ app.post("/logout", (req, res, next) => {
 });
 
 // ***** Add Message End Point *****
-app.post("/message/add", async (req, res) => {
+app.post("/api/message/add", async (req, res) => {
   const { title, content } = req.body;
   try {
     await queryDB("INSERT INTO messageboard (title, content) VALUES ($1, $2)", [title, content]);
@@ -224,7 +218,7 @@ app.post("/message/add", async (req, res) => {
 });
 
 // ***** Delete Message End Point *****
-app.post("/message/delete", async (req, res) => {
+app.post("/api/message/delete", async (req, res) => {
   const { title } = req.body;
   try {
     await queryDB("DELETE FROM messageboard WHERE title = $1", [title]);
@@ -235,7 +229,7 @@ app.post("/message/delete", async (req, res) => {
 });
 
 // ***** Retrieve All Messages End Point *****
-app.post("/message/all", async (req, res) => {
+app.post("/api/message/all", async (req, res) => {
   try {
     const result = await queryDB("SELECT * FROM messageboard");
     if (result.rows.length > 0) {
@@ -249,7 +243,7 @@ app.post("/message/all", async (req, res) => {
 });
 
 // ***** Add/Update Role End Point *****
-app.post("/role/add", async (req, res) => {
+app.post("/api/role/add", async (req, res) => {
   const { userid, role1, role2 } = req.body;
 
   try {
@@ -268,7 +262,7 @@ app.post("/role/add", async (req, res) => {
 });
 
 // ***** Retrieve All Roles End Point *****
-app.post("/role/all", async (req, res) => {
+app.post("/api/role/all", async (req, res) => {
   const { role } = req.body;
   try {
     const result = await queryDB(
@@ -282,7 +276,7 @@ app.post("/role/all", async (req, res) => {
 });
 
 // ***** Update User Role End Point *****
-app.post("/role/update", async (req, res) => {
+app.post("/api/role/update", async (req, res) => {
   const { userid, role } = req.body;
   try {
     await queryDB("UPDATE uservolunteer SET role1 = $2, role2 = NULL WHERE userid = $1", [userid, role]);
@@ -292,7 +286,7 @@ app.post("/role/update", async (req, res) => {
   }
 });
 
-app.post("/role", async (req, res) => {
+app.post("/api/role", async (req, res) => {
   const {userid} = req.body;
   try {
     const result = await queryDB(

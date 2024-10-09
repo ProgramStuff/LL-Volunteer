@@ -29,10 +29,9 @@ export default function Login() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-
     try {
       // Hit server login end point
-      const response = await axios.post("http://localhost:3000/login", { email, password });
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/login`, { email, password });
 
       if (response.status === 200) {
         console.log("Login successful");

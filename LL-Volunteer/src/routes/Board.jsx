@@ -24,7 +24,7 @@ export default function Board() {
   async function loadNotes() {
     try {
       // Hit message insert end point
-      const response = await axios.post("http://localhost:3000/message/all");
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/message/all`);
       if (response.status === 200) {
         const noteData = response.data.data;
 
@@ -51,7 +51,7 @@ export default function Board() {
   async function addNote(newNote) {
     try {
       // Hit message insert end point
-      const response = await axios.post("http://localhost:3000/message/add", newNote);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/message/add`, newNote);
       if (response.status === 200) {
         setNotes(prevNotes => {
           return [...prevNotes, newNote];
@@ -68,7 +68,7 @@ export default function Board() {
   async function deleteNote(id, title) {
     try {
       // Hit message insert end point
-      const response = await axios.post("http://localhost:3000/message/delete", {title: title});
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/message/delete`, {title: title});
       if (response.status === 200) {
         setNotes(prevNotes => {
           return prevNotes.filter((noteItem, index) => {

@@ -19,8 +19,6 @@ const defaultTheme = createTheme({
     },
 });
 
-// TODO: Pass user role when hitting end point
-
 
 export default function register() {
   const context = useOutletContext()
@@ -39,13 +37,13 @@ export default function register() {
 
     try {
       // Hit sever registration end point
-      const response = await axios.post("http://localhost:3000/register", { email, password, lName, fName });
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/register`, { email, password, lName, fName });
 
       if (response.status === 200) {
         // If successful navigate to home
         try {
           // Hit server login end point
-          const response = await axios.post("http://localhost:3000/login", { email, password });
+          const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/login`, { email, password });
     
           if (response.status === 200) {
             console.log("Login successful");

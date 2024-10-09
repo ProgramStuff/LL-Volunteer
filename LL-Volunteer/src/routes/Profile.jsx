@@ -40,11 +40,10 @@ export default function Profile() {
     async function handleSubmit(event) {
       
       event.preventDefault();
-      //   TODO: Conditionally render chosen roles and confirmed roles
 
       try {
         // Hit role insert end point
-        const response = await axios.post("http://localhost:3000/role/add", {userid: userid, role1: role1, role2: role2});
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/role/add`, {userid: userid, role1: role1, role2: role2});
         if (response.status === 200) {
           console.log("Insert successful");
           setChosenRole1(response.role1);
@@ -61,7 +60,7 @@ export default function Profile() {
     async function getRoles() {
       try {
         // Hit message insert end point
-        const response = await axios.post("http://localhost:3000/role", {userid: userid});
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/role`, {userid: userid});
         if (response.status === 200) {
           const userRoles = response.data.data[0];
           setSelectedRoles(userRoles)

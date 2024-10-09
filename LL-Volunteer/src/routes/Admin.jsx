@@ -55,8 +55,9 @@ export default function Admin() {
       event.preventDefault();
 
       try {
+
         // Hit role insert end point
-        const response = await axios.post("http://localhost:3000/role/all", {role: role});
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/role/all`, {role: role});
         if (response.status === 200) {
           console.log("Request successful");
           setAllRoles(response.data.data);
@@ -75,7 +76,7 @@ export default function Admin() {
       const role = userRole.role
       try {
         // Hit role insert end point
-        const response = await axios.post("http://localhost:3000/role/update", {userid: userid, role: role});
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/role/update`, {userid: userid, role: role});
         if (response.status === 200) {
           console.log("Request successful");
         } else {
