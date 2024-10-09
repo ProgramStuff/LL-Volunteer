@@ -9,6 +9,10 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import path from 'path';
 import { createPool } from '@vercel/postgres';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const saltRounds = 10;
@@ -40,10 +44,10 @@ app.use(
 );
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../dist')));
+  app.use(express.static(path.join(__dirname, '..', 'dist')));
 
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../dist', 'index.html'));
+    res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'));
   });
 }
 
