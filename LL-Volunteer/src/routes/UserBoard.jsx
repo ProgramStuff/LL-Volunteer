@@ -24,21 +24,27 @@ export default function UserBoard() {
 
   async function loadNotes() {
     try {
-      // Hit message insert end point
-      const response = await axios.post("http://localhost:3000/message/all");
+      // Determine the API URL based on environment
+      const baseURL = import.meta.env.VITE_VERCEL_ENV === "production"
+        ? import.meta.env.VITE_PROD_URL
+        : "http://localhost:3000";
+  
+      // Hit the message insert endpoint
+      const response = await axios.post(`${baseURL}/message/all`);
+      
       if (response.status === 200) {
         const noteData = response.data.data;
-
+  
         noteData.map((note) => {
-          let id = note.messageId
           let title = note.title;
-          let content = note.content
-          let newNote = {title: title, content: content}
-          setNotes(prevNotes => {
+          let content = note.content;
+          let newNote = { title: title, content: content };
+          
+          setNotes((prevNotes) => {
             return [...prevNotes, newNote];
           });
         });
-   
+     
         console.log("Load successful");
         return response.data.data;
       } else {
@@ -48,10 +54,11 @@ export default function UserBoard() {
       console.error("Load failed:", error);
     }
   }
-
-  useEffect(() =>{
+  
+  useEffect(() => {
     loadNotes();
-  },[])
+  }, []);
+  
 
   return (
     <ThemeProvider theme={darkTheme}>

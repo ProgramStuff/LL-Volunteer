@@ -55,8 +55,11 @@ export default function Admin() {
       event.preventDefault();
 
       try {
+        const baseURL = import.meta.env.VITE_VERCEL_ENV === "production"
+        ? import.meta.env.VITE_PROD_URL
+        : "http://localhost:3000";
         // Hit role insert end point
-        const response = await axios.post("http://localhost:3000/role/all", {role: role});
+        const response = await axios.post(`${baseURL}/role/all`, {role: role});
         if (response.status === 200) {
           console.log("Request successful");
           setAllRoles(response.data.data);
@@ -74,8 +77,11 @@ export default function Admin() {
       const userid = userRole.userid
       const role = userRole.role
       try {
+        const baseURL = import.meta.env.VITE_VERCEL_ENV === "production"
+        ? import.meta.env.VITE_PROD_URL
+        : "http://localhost:3000";
         // Hit role insert end point
-        const response = await axios.post("http://localhost:3000/role/update", {userid: userid, role: role});
+        const response = await axios.post(`${baseURL}/role/update`, {userid: userid, role: role});
         if (response.status === 200) {
           console.log("Request successful");
         } else {
