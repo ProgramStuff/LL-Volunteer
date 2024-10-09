@@ -16,9 +16,8 @@ const saltRounds = 10;
 env.config();
 const secret = process.env.SESSION_SECRET
 const port = process.env.PORT || 3000;
-
-
 const isProduction = process.env.NODE_ENV === 'production';
+
 
 // Body-parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -86,6 +85,7 @@ const pool = createPool({
 // Helper function to handle database queries
 const queryDB = async (text, params) => {
   const client = await pool.connect();
+  console.log("CLIENT CONNECTED: " + client)
   try {
     const result = await client.query(text, params);
     return result;
