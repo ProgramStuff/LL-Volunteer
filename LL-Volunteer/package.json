@@ -55,5 +55,8 @@
   "bugs": {
     "url": "https://github.com/ProgramStuff/LL-Volunteer/issues"
   },
-  "homepage": "https://github.com/ProgramStuff/LL-Volunteer#readme"
+  "homepage": "https://github.com/ProgramStuff/LL-Volunteer#readme",
+  "vercel": {
+    "output": "dist"
+  }
 }
