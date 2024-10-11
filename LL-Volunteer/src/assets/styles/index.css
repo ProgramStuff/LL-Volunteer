@@ -19,6 +19,7 @@ body {
     margin-bottom: .55em;
     margin-top: .8em;
     font-size: 3rem;
+    color: rgb(34, 106, 184);
 }
 
 article{
@@ -58,11 +59,10 @@ button:hover{
 }
 
 /* Article Style */
-#art2{
+#art2 {
     display: grid;
-    grid-template-columns: auto auto; /* Two columns with auto width */
-    grid-template-rows: auto auto; /* Two rows with auto height */
-    grid-gap: .5em;
+    grid-template-columns: 1fr 1fr; /* One column by default */
+    grid-gap: 1em;
     margin-top: 3.5em;
 }
 
@@ -86,14 +86,11 @@ button:hover{
     display: flex;
     flex-direction: column;
     text-align: center;
+    break-inside: avoid;
 }
 
 .artSection img{
     display: block;
-}
-
-.artSection{
-    break-inside: avoid;
 }
 
 /* Footer styles */
@@ -112,4 +109,85 @@ footer a {
 footer p{
     margin-top: .4rem;
     margin-bottom: .2rem;
+}
+
+/* Media Queries for Responsive Design */
+
+/* For tablets and small desktops */
+@media screen and (max-width: 1024px) {
+    body {
+        margin: 0% 5%;
+    }
+
+    #mainSection {
+        column-count: 1;
+        margin-left: 0;
+    }
+
+    #titleH1 {
+        font-size: 2.5rem;
+    }
+
+    #art2 {
+        grid-template-columns: 1fr 1fr; /* Keep two columns for tablets */
+    }
+}
+
+/* For mobile phones */
+@media screen and (max-width: 768px) {
+    body {
+        margin: 0% 3%;
+    }
+
+    #titleH1 {
+        margin-top: 0;
+        font-size: 2rem;
+        text-align: center;
+        margin-bottom: 1em;
+    }
+
+    #art1p {
+        text-align: center;
+        font-size: 1.2em;
+    }
+
+    #art2 {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: 2em;
+    }
+
+    .artSection {
+        width: 48%; /* Adjust this value to control the gap between sections */
+        margin-bottom: 1.5em;
+        font-size: 1.8vh;
+    }
+
+    #art3, #art4 {
+        width: 100%;
+        margin-left: 0;
+        padding: 0;
+    }
+
+}
+
+/* For very small mobile devices */
+@media screen and (max-width: 480px) {
+    #titleH1 {
+        font-size: 1.8rem;
+    }
+
+    #art1p {
+        font-size: 1em;
+    }
+
+    .links {
+        font-size: 0.9em;
+    }
+
+    .artSection {
+        width: 100%; /* Full width for very small devices */
+    }
+    
 }

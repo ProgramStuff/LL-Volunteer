@@ -100,116 +100,141 @@ export default function Admin() {
 
     return (
       <ThemeProvider theme={defaultTheme}>
-        <Container component="main" maxWidth="xs">
+        <Container component="main" sx={{
+          maxWidth: { xs: '100%', sm: '540px', md: '800px', lg: '1200px' },
+          padding: { xs: 2, sm: 3, md: 4 }
+        }}>
           <CssBaseline />
           <Box
             sx={{
-              marginTop: 8,
+              marginTop: { xs: 4, sm: 6, md: 0 },
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
             }}
           >
-            <Typography sx={{fontSize: '2.5rem'}} component="h1" variant="h5">
-            Welcome {context.user.username}
+            <Typography sx={{
+              fontSize: { xs: '2rem', sm: '2.25rem', md: '2.5rem' },
+              textAlign: 'center',
+              mb: { xs: 2, sm: 3, md: 4 }
+            }} component="h1" variant="h5">
+              Welcome {context.user.username}
             </Typography>
-            <Card variant='outlined' sx={{ minWidth: 275}}>
-            <CardContent>
-            <Typography sx={{ml: 7, fontSize: '1.5rem'}} component="h2" variant="h5">
-            Search Volunteers by Role
-            </Typography>
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ width: 400, mt: 1 }}>
-              {/* Selection for volunteer type */}
-              <FormControl sx={{ m: 1, minWidth: 120,  ml: '13vh'}}>
-                <FormHelperText sx={{fontSize: '1rem'}} >Role</FormHelperText>
-                <Select
-                    labelId="role"
-                    sx={{minWidth: '10rem'}}
-                    id="demo-simple-select"
-                    value={role}
-                    label="Role"
-                    required
-                    onChange={(e) => setRole(e.target.value)}
-                >
-                    <MenuItem value={"Referee"}>Referee</MenuItem>
-                    <MenuItem value={"Judge"}>Judge</MenuItem>
-                    <MenuItem value={"Pit Runner"}>Pit Runner</MenuItem>
-                    <MenuItem value={"Score Keeper"}>Score Keeper</MenuItem>
-                    <MenuItem value={"Floater"}>Floater</MenuItem>
-                </Select>
-              </FormControl>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                onSubmit={handleSubmit}
-                sx={{ml: '14vh', mt: 3, mb: 2, maxWidth: '15vh'}}
-              >
-                Search
-              </Button>
-            </Box>
-            </CardContent>
+            <Card variant='outlined' sx={{
+              width: '100%',
+              maxWidth: { xs: '100%', sm: '500px', md: '600px' },
+              marginTop: { xs: 2, sm: 3 }
+            }}>
+              <CardContent>
+                <Typography sx={{
+                  fontSize: { xs: '1.2rem', sm: '1.35rem', md: '1.5rem' },
+                  textAlign: 'center',
+                  mb: { xs: 2, sm: 3 }
+                }} component="h2" variant="h5">
+                  Search Volunteers by Role
+                </Typography>
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ width: '100%', mt: 1 }}>
+                  <FormControl sx={{
+                    m: 1,
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center'
+                  }}>
+                    <FormHelperText sx={{ fontSize: '1rem' }}>Role</FormHelperText>
+                    <Select
+                      labelId="role"
+                      sx={{
+                        width: { xs: '100%', sm: '80%', md: '60%' },
+                        minWidth: '10rem'
+                      }}
+                      id="demo-simple-select"
+                      value={role}
+                      label="Role"
+                      required
+                      onChange={(e) => setRole(e.target.value)}
+                    >
+                      <MenuItem value={"Referee"}>Referee</MenuItem>
+                      <MenuItem value={"Judge"}>Judge</MenuItem>
+                      <MenuItem value={"Pit Runner"}>Pit Runner</MenuItem>
+                      <MenuItem value={"Score Keeper"}>Score Keeper</MenuItem>
+                      <MenuItem value={"Floater"}>Floater</MenuItem>
+                    </Select>
+                  </FormControl>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    onSubmit={handleSubmit}
+                    sx={{
+                      mt: 3,
+                      mb: 2,
+                      width: { xs: '100%', sm: '80%', md: '60%' },
+                      maxWidth: '200px',
+                      alignSelf: 'center',
+                      display: 'block',
+                      mx: 'auto'
+                    }}
+                  >
+                    Search
+                  </Button>
+                </Box>
+              </CardContent>
             </Card>
 
-
-
-            {/* Only show radial buttons if more than 1 volunteer role */}
             {allRoles == "" ? null : 
-                <FormControl>
-                  <RadioGroup sx={{padding: 0, margin: 0}}>
-                  <TableContainer sx={{minWidth: '90vh', mt: '3vh'}} component={Paper}>
-                  <Table sx={{ minWidth: '80vh' }} aria-label="simple table">
-                    <TableHead sx={{backgroundColor: 'black'}}>
-                      <TableRow>
-                        <TableCell>Volunteer Name</TableCell>
-                        <TableCell align="right">First Role</TableCell>
-                        <TableCell align="right">Second Role</TableCell>
-                        <TableCell align="right">Approve</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody sx={{'&:last-child td, &:last-child th': {border: 0}}}>
+              <FormControl sx={{ width: '100%', mt: { xs: 3, sm: 4, md: 5 } }}>
+                <RadioGroup sx={{ padding: 0, margin: 0, width: '100%' }}>
+                  <TableContainer sx={{
+                    width: '100%',
+                    overflowX: 'auto',
+                    '& .MuiTable-root': {
+                      minWidth: { xs: '600px', md: '100%' }
+                    }
+                  }} component={Paper}>
+                    <Table aria-label="simple table">
+                      <TableHead sx={{ backgroundColor: 'black' }}>
+                        <TableRow>
+                          <TableCell>Volunteer Name</TableCell>
+                          <TableCell align="right">First Role</TableCell>
+                          <TableCell align="right">Second Role</TableCell>
+                          <TableCell align="right">Approve</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                        {/* Map though role and display them in a table with user names to confirm */}
+                        {allRoles.map((single, index) => {
+                          return(
+                            <TableRow
+                            key={single.userid}
+                          >
+                            <TableCell component="th" scope="row">
+                              {single.fname} {single.lname}
+                            </TableCell>
 
- {/* Map though role and display them in a table with user names to confirm */}
-
-                  {allRoles.map((single, index) => {
-                    return(
-                      <TableRow
-                      key={single.userid}
-                    >
-                      <TableCell component="th" scope="row">
-                        {single.fname} {single.lname}
-                      </TableCell>
-
-                      <TableCell align="right">
-                      <FormControlLabel value={`${single.userid}:${single.role1}`} control={single.role2 != null ? <Radio /> : <> </>} onChange={handleChange} label={single.role1}/>
-                      </TableCell>
-                      {single.role2 != null &&   
-                      <>              
-                      <TableCell align="right">
-                        <FormControlLabel value={`${single.userid}:${single.role2}`} control={<Radio />} onChange={handleChange} label={single.role2}/>
-                      </TableCell>
-                      <TableCell align="right">
-                      <Button onClick={handleClick}>Confirm</Button>
-                      </TableCell>
-                      </>
-                      }
-      
+                            <TableCell align="right">
+                            <FormControlLabel value={`${single.userid}:${single.role1}`} control={single.role2 != null ? <Radio /> : <> </>} onChange={handleChange} label={single.role1}/>
+                            </TableCell>
+                            {single.role2 != null &&   
+                            <>              
+                            <TableCell align="right">
+                              <FormControlLabel value={`${single.userid}:${single.role2}`} control={<Radio />} onChange={handleChange} label={single.role2}/>
+                            </TableCell>
+                            <TableCell align="right">
+                            <Button onClick={handleClick}>Confirm</Button>
+                            </TableCell>
+                            </>
+                            }
             
-                    </TableRow>
-           
-                    )
-                  })}
+                          </TableRow>
+                          )
+                        })}
                       </TableBody>
                     </Table>
                   </TableContainer>
-                  </RadioGroup>
-                </FormControl>
-
+                </RadioGroup>
+              </FormControl>
             }
-
-            {/* TODO: Create container for user roles */}
           </Box>
-          <Footer sx={{mt: '30vh'}}/>
+          <Footer sx={{ mt: { xs: '10vh', sm: '15vh', md: '20vh', lg: '28vh' }, mb:0 }} />
         </Container>
       </ThemeProvider>
     );

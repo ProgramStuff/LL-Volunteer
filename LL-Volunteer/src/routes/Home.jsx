@@ -31,10 +31,10 @@ export default function Home() {
               <p id="art1p">Welcome to the Volunteer Information site for your local First Lego League Events!</p>
           </article>
 
-          
+{/*           
           <article id="art3">
               <img src="/LegoPlaceholder1.png" alt="Lego Blocks" width="35%"/>
-          </article>
+          </article> */}
 
           <article id="art2">
               <section className="artSection">
@@ -62,7 +62,16 @@ export default function Home() {
               </section>
           </article>
         </section>
-          <Footer sx={{pt: '5vh'}}/>
+          <Footer 
+            sx={{
+              pt: {
+                xs: '0',
+                sm: '0',
+                md: '17vh',
+                lg: '17vh'
+              },
+            }}
+          />
         </Container>
       </ThemeProvider>
   );

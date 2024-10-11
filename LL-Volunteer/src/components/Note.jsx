@@ -11,8 +11,8 @@ export default function Note(props) {
       <h1>{props.title}</h1>
       <p>{props.content}</p>
       {props.onDelete &&
-      <button onClick={handleClick}>
-        <DeleteIcon/>
+      <button className="delete-button" onClick={handleClick}>
+        <DeleteIcon />
       </button>}
     </div>
   );

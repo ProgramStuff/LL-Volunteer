@@ -81,36 +81,60 @@ export default function Profile() {
 
     return (
       <ThemeProvider theme={defaultTheme}>
-        <Container component="main" maxWidth="xs">
+        <Container component="main" sx={{
+          maxWidth: { xs: '100%', sm: '540px', md: '800px', lg: '1200px' },
+          padding: { xs: 2, sm: 3, md: 4 }
+        }}>
           <CssBaseline />
           <Box
             sx={{
-              marginTop: 8,
+              marginTop: { xs: 4, sm: 6, md: 8 },
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
             }}
           >
-            <Typography sx={{textAlign: 'center',fontSize: '4vh'}} component="h1" variant="h5">
+            <Typography sx={{
+              textAlign: 'center',
+              fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' },
+              mb: { xs: 2, sm: 3 }
+            }} component="h1" variant="h5">
             Welcome {context.user.username}
             </Typography>
-            <Card variant='outlined' sx={{ minWidth: 275}}>
+            <Card variant='outlined' sx={{
+              width: '100%',
+              maxWidth: { xs: '100%', sm: '500px', md: '600px' },
+              marginTop: { xs: 2, sm: 3 }
+            }}>
             <CardContent>
-            <Typography sx={{textAlign: 'center', fontSize: '2vh'}} component="h2" variant="h5">
+            <Typography sx={{
+              textAlign: 'center',
+              fontSize: { xs: '1.2rem', sm: '1.5rem', md: '1.8rem' },
+              mb: { xs: 2, sm: 3 }
+            }} component="h2" variant="h5">
               Select your roles
             </Typography>
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ width: 400, mt: 1 }}>
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{
+              width: '100%',
+              maxWidth: '400px',
+              mt: 1,
+              mx: 'auto'
+            }}>
               {/* Selection for volunteer type */}
-              <FormControl sx={{ m: 1, minWidth: 120 }}>
-                <FormHelperText sx={{fontSize: '1rem'}} >Role 1</FormHelperText>
+              <FormControl sx={{
+                m: 1,
+                width: { xs: '100%', sm: 'calc(50% - 16px)' },
+                minWidth: { xs: '100%', sm: '120px' }
+              }}>
+                <FormHelperText sx={{ fontSize: '1rem' }}>Role 1</FormHelperText>
                 <Select
                     labelId="role1"
-                    sx={{minWidth: '10rem'}}
                     id="demo-simple-select"
                     value={role1}
                     label="Role"
                     required
                     onChange={(e) => setRole1(e.target.value)}
+                    sx={{ width: '100%' }}
                 >
                     <MenuItem value={"Referee"}>Referee</MenuItem>
                     <MenuItem value={"Judge"}>Judge</MenuItem>
@@ -120,16 +144,20 @@ export default function Profile() {
                 </Select>
               </FormControl>
   
-              <FormControl sx={{ m: 1, minWidth: 120, ml: 7}}>
-              <FormHelperText sx={{fontSize: '1rem'}} >Role 2</FormHelperText>
+              <FormControl sx={{
+                m: 1,
+                width: { xs: '100%', sm: 'calc(50% - 16px)' },
+                minWidth: { xs: '100%', sm: '120px' }
+              }}>
+              <FormHelperText sx={{ fontSize: '1rem' }}>Role 2</FormHelperText>
               <Select
                     labelId="role2"
-                    sx={{minWidth: '10rem'}}
                     id="demo-simple-select"
                     value={role2}
                     label="Role"
                     required
                     onChange={(e) => setRole2(e.target.value)}
+                    sx={{ width: '100%' }}
                 >
                     <MenuItem value={"Referee"}>Referee</MenuItem>
                     <MenuItem value={"Judge"}>Judge</MenuItem>
@@ -143,7 +171,7 @@ export default function Profile() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onSubmit={{handleSubmit}}
+                onSubmit={handleSubmit}
               >
                 Confirm
               </Button>
@@ -155,17 +183,29 @@ export default function Profile() {
             </Card>
 
             {selectedRoles != "" &&           
-            <Card variant='outlined' sx={{mt: '2vh', minWidth: '40vh'}}>
+            <Card variant='outlined' sx={{
+              mt: { xs: 3, sm: 4 },
+              width: '100%',
+              maxWidth: { xs: '100%', sm: '500px', md: '600px' }
+            }}>
                 {selectedRoles.role2 != null ? 
                 <CardContent>
-                <Typography sx={{textAlign: 'center', fontSize: '2vh', mb: '2vh'}}>Roles Waiting for Approval</Typography>
-                <Typography sx={{fontSize: '2vh', mb: '2vh'}}>Role Choice 1 |  {selectedRoles.role1}</Typography>
-                <Typography sx={{fontSize: '2vh', mb: '2vh'}}>Role Choice 2 |  {selectedRoles.role2}</Typography>
+                <Typography sx={{
+                  textAlign: 'center',
+                  fontSize: { xs: '1.2rem', sm: '1.4rem' },
+                  mb: { xs: 2, sm: 3 }
+                }}>Roles Waiting for Approval</Typography>
+                <Typography sx={{ fontSize: '1rem', mb: 2 }}>Role Choice 1 |  {selectedRoles.role1}</Typography>
+                <Typography sx={{ fontSize: '1rem', mb: 2 }}>Role Choice 2 |  {selectedRoles.role2}</Typography>
                 </CardContent>
                 :
                 <CardContent>
-                <Typography sx={{textAlign: 'center', fontSize: '2vh', mb: '2vh'}}>Approved</Typography>
-                <Typography sx={{fontSize: '2vh', mb: '2vh'}}>Approved Role |  {selectedRoles.role1}</Typography>
+                <Typography sx={{
+                  textAlign: 'center',
+                  fontSize: { xs: '1.2rem', sm: '1.4rem' },
+                  mb: { xs: 2, sm: 3 }
+                }}>Approved</Typography>
+                <Typography sx={{ fontSize: '1rem', mb: 2 }}>Approved Role |  {selectedRoles.role1}</Typography>
                 </CardContent>
               }
             </Card>
@@ -173,7 +213,7 @@ export default function Profile() {
   
 
           </Box>
-          <Footer sx={{mt: '12vh'}}/>
+          <Footer sx={{ mt: { xs: 6, sm: 8, md: 10 } }}/>
         </Container>
       </ThemeProvider>
     );

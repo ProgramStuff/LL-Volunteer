@@ -1,4 +1,3 @@
-
   .note {
     background: #fff;
     border-radius: 7px;
@@ -74,3 +73,47 @@
     outline: none;
   }
   
+  /* Media Queries for Responsive Design */
+
+  @media screen and (max-width: 768px) {
+    .note {
+      width: calc(50% - 32px); /* Two notes per row on tablets */
+      margin: 16px;
+    }
+
+    form.create-note {
+      width: 90%;
+      max-width: 480px;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .note {
+      width: calc(100% - 32px); /* Full width on mobile */
+      margin: 16px;
+      float: none;
+    }
+
+    .delete-button {
+      bottom: 27px;
+    }
+
+
+
+    form.create-note {
+      width: 90%;
+      margin: 20px auto;
+    }
+
+    form.create-note input,
+    form.create-note textarea {
+      font-size: 1em;
+    }
+
+    form.create-note button {
+      right: 10px;
+      bottom: -15px;
+      width: 32px;
+      height: 30px;
+    }
+  }

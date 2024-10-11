@@ -70,7 +70,7 @@ export default function register() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: {xs: 0, sm: 1, md: 8, lg: 8},
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -154,7 +154,7 @@ export default function register() {
             </Grid>
           </Box>
         </Box>
-        <Footer sx={{mt: '18vh'}} />
+        <Footer sx={{mt: {xs: 3, sm: 3, md: '18vh', lg: '18vh'}}} />
       </Container>
     </ThemeProvider>
   );

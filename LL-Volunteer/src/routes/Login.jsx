@@ -51,7 +51,7 @@ export default function Login() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: {xs: 0, sm: 1, md: 8, lg: 8},
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -114,7 +114,7 @@ export default function Login() {
             </Grid>
           </Box>
         </Box>
-        <Footer sx={{mt: '27vh'}} />
+        <Footer sx={{mt: {xs: 10, sm: 10, md: '27vh', lg: '27vh'}}} />
       </Container>
     </ThemeProvider>
   );

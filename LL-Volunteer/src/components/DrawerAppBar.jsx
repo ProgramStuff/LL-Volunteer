@@ -82,13 +82,35 @@ export default function DrawerAppBar(props) {
         {/* Conditionally show Profile and Logout if user is logged in */}
         {user && (
           <>
+            {user.role === "user" && (
+            <ListItem disablePadding>
+              <ListItemButton sx={{ textAlign: 'center' }}>
+                <Link to="/userBoard" style={{ color: 'inherit', textDecoration: 'none' }}>
+                  <ListItemText primary="Board" />
+                </Link>
+              </ListItemButton>
+              </ListItem>
+            )}
+
+            {user.role === "admin" && (
+            <ListItem disablePadding>
+              <ListItemButton sx={{ textAlign: 'center' }}>
+                <Link to="/board" style={{ color: 'inherit', textDecoration: 'none' }}>
+                  <ListItemText primary="Board" />
+                </Link>
+              </ListItemButton>
+              </ListItem>
+            )}
+
+            {user.role === "user" && (
             <ListItem disablePadding>
               <ListItemButton sx={{ textAlign: 'center' }}>
                 <Link to="/profile" style={{ color: 'inherit', textDecoration: 'none' }}>
                   <ListItemText primary="Profile" />
                 </Link>
               </ListItemButton>
-            </ListItem>
+              </ListItem>
+            )}
 
             {/* Conditionally show Admin or Board if user is an admin */}
             {user.role === "admin" && (
@@ -132,7 +154,7 @@ export default function DrawerAppBar(props) {
             <Typography
               variant="h6"
               component="div"
-              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+              sx={{ flexGrow: 1, display: { xs: 'block', sm: 'block' } }}
             >
               FLL Volunteer
             </Typography>
