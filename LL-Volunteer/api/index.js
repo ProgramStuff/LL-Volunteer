@@ -11,7 +11,7 @@ import path from 'path';
 import { createPool } from '@vercel/postgres';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-var GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
+// var GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
