@@ -43,7 +43,7 @@ export default function DrawerAppBar(props) {
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }} >
       <Typography variant="h6" sx={{ my: 2 }}>
         FLL Volunteer
       </Typography>
@@ -86,7 +86,7 @@ export default function DrawerAppBar(props) {
             <ListItem disablePadding>
               <ListItemButton sx={{ textAlign: 'center' }}>
                 <Link to="/userBoard" style={{ color: 'inherit', textDecoration: 'none' }}>
-                  <ListItemText primary="Board" />
+                  <ListItemText primary="Messages" />
                 </Link>
               </ListItemButton>
               </ListItem>
@@ -96,7 +96,7 @@ export default function DrawerAppBar(props) {
             <ListItem disablePadding>
               <ListItemButton sx={{ textAlign: 'center' }}>
                 <Link to="/board" style={{ color: 'inherit', textDecoration: 'none' }}>
-                  <ListItemText primary="Board" />
+                  <ListItemText primary="Messages" />
                 </Link>
               </ListItemButton>
               </ListItem>
@@ -140,7 +140,7 @@ export default function DrawerAppBar(props) {
     <ThemeProvider theme={darkTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar component="nav">
+        <AppBar component="nav" sx={{ color: '#FCC737' }}>
           <Toolbar>
             <IconButton
               color="inherit"
@@ -174,11 +174,11 @@ export default function DrawerAppBar(props) {
               </Button>}
 
               {user && user.role === "user" && <Button sx={{ color: '#fff' }}>
-                <Link to="/userBoard" style={{ color: 'inherit', textDecoration: 'none' }}>Board</Link>
+                <Link to="/userBoard" style={{ color: 'inherit', textDecoration: 'none' }}>Messages</Link>
               </Button>}
 
               {user && user.role === "admin" && <Button sx={{ color: '#fff' }}>
-                <Link to="/board" style={{ color: 'inherit', textDecoration: 'none' }}>Board</Link>
+                <Link to="/board" style={{ color: 'inherit', textDecoration: 'none' }}>Messages</Link>
               </Button>}
 
               {/* Conditionally render "Register" and "Login" when no user is logged in */}
@@ -191,7 +191,7 @@ export default function DrawerAppBar(props) {
               </Button>}
 
               {/* Show "Logout" if user is logged in */}
-              {user && <Button sx={{ color: '#fff' }} onClick={logoutUser}>Logout</Button>}
+              {user && <Button sx={{ color: 'inherit' }} onClick={logoutUser}>Logout</Button>}
             </Box>
           </Toolbar>
         </AppBar>

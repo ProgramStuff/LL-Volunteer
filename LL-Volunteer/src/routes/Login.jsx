@@ -10,6 +10,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import Footer from '../components/Footer';
 import axios from 'axios';
 
@@ -27,22 +29,53 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    try {
-      // Hit server login end point
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/login`, { email, password });
+  // Error state
+  const [emailError, setEmailError] = React.useState(false);
+  const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
+  const [passwordError, setPasswordError] = React.useState(false);
+  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
 
-      if (response.status === 200) {
-        console.log("Login successful");
-        !context.user && context.loginUser(response.data.id, response.data.userName, response.data.role);
-        navigate('/')
-      } else {
-        console.log("Unexpected response:", response);
-      }
-    } catch (error) {
-      console.error("Login failed:", error);
+  function validateInput(){
+    if (!email ||!/\S+@\S+\.\S+/.test(email)){
+      setEmailError(true);
+      setEmailErrorMessage("Please enter a valid email.");
+    }else{
+      setEmailError(false);
+      setEmailErrorMessage("");
     }
+
+    if(!password || password.length < 8){
+      setPasswordError(true);
+      setPasswordErrorMessage("Password must be a minimum of 8 characters long");
+    }else {
+      setPasswordError(false);
+      setPasswordErrorMessage("");
+    }
+  }
+
+
+  async function handleSubmit(event) {
+    validateInput();
+    if (emailError || passwordError) {
+      event.preventDefault();
+      return;
+    }else{
+      event.preventDefault();
+      try {
+        // Hit server login end point
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/login`, { email, password });
+
+        if (response.status === 200) {
+          console.log("Login successful");
+          !context.user && context.loginUser(response.data.id, response.data.userName, response.data.role);
+          navigate('/')
+        } else {
+          console.log("Unexpected response:", response);
+        }
+      } catch (error) {
+        console.error("Login failed:", error);
+      }
+  }
   }
 
   return (
@@ -57,35 +90,53 @@ export default function Login() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: '#FCC737' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Login
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: '100%',
+              gap: 2,
+            }}>
+          <FormControl>
+            <FormLabel htmlFor="email">Email</FormLabel>
             <TextField
-              margin="normal"
+              error={emailError}
+              helperText={emailErrorMessage}
               required
               fullWidth
+              type="email"
               id="email"
-              label="Email Address"
+              placeholder="your@email.com"
               name="email"
               autoComplete="email"
               autoFocus
+              color={emailError ? 'error' : 'primary'}
               onChange={(e) => setEmail(e.target.value)}
             />
+            </FormControl>
+
+            <FormControl>
+            <FormLabel htmlFor="email">Password</FormLabel>
             <TextField
-              margin="normal"
+              error={passwordError}
+              helperText={passwordErrorMessage}
               required
               fullWidth
               name="password"
-              label="Password"
+              placeholder="••••••••"
               type="password"
               id="password"
               autoComplete="current-password"
+              color={passwordError ? 'error' : 'primary'}
               onChange={(e) => setPassword(e.target.value)}
             />
+            </FormControl>
             {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
@@ -94,9 +145,9 @@ export default function Login() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, backgroundColor: '#FCC737'}}
             >
-              Sign In
+              LogIn
             </Button>
             <Grid container>
               <Grid item xs>
