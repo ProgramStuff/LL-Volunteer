@@ -161,6 +161,7 @@ export default function Admin() {
                     </Select>
                   </FormControl>
                   <Button
+                  id='submitButton'
                     type="submit"
                     variant="contained"
                     onSubmit={handleSubmit}
@@ -171,7 +172,8 @@ export default function Admin() {
                       maxWidth: '200px',
                       alignSelf: 'center',
                       display: 'block',
-                      mx: 'auto'
+                      mx: 'auto',
+                      backgroundColor: '#FCC737'
                     }}
                   >
                     Search

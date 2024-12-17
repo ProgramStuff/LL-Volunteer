@@ -44,7 +44,7 @@ export default function DrawerAppBar(props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }} >
-      <Typography variant="h6" sx={{ my: 2 }}>
+      <Typography variant="h6" sx={{ my: 2 , color: '#FCC737'}}>
         FLL Volunteer
       </Typography>
       <Divider />
@@ -125,7 +125,7 @@ export default function DrawerAppBar(props) {
 
             <ListItem disablePadding>
               <ListItemButton sx={{ textAlign: 'center' }}>
-                <Button sx={{ color: '#fff' }} onClick={logoutUser}>Logout</Button>
+                <Button sx={{ color: '#FCC737' }} onClick={logoutUser}>Logout</Button>
               </ListItemButton>
             </ListItem>
           </>

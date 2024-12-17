@@ -26,17 +26,10 @@ article{
     break-inside: avoid;
 }
 
-/* button {
-    padding: .8em 2em;
-    font-weight: bold;
-    font-family: sans-serif, Arial;
-    text-align: center;
-    border: 2px solid rgb(19, 48, 80); 
-    border-radius: 4px;
-    background-color: rgb(26, 68, 112);
-    color: white;
-    transition: background-color 0.3s ease;
-} */
+#submitButton:hover {
+    background-color: #a0780b;
+}
+
 
 button:hover{
     background-color: rgba(26, 67, 112, .9);
@@ -50,12 +43,13 @@ button:hover{
 .links {
     color: white;
     font-weight: 500;
-    text-decoration: underline;
+    text-decoration: none;
     font-weight: bold;
 }
 
 .links:hover {
     cursor: pointer;
+    color: #FCC737;
 }
 
 /* Article Style */

@@ -142,6 +142,7 @@ export default function Login() {
               label="Remember me"
             /> */}
             <Button
+              id='submitButton'
               type="submit"
               fullWidth
               variant="contained"
