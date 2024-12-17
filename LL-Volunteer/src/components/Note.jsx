@@ -12,7 +12,7 @@ export default function Note(props) {
       <p>{props.content}</p>
       {props.onDelete &&
       <button className="delete-button" onClick={handleClick}>
-        <DeleteIcon />
+        <DeleteIcon sx={{color: '#FCC737'}} />
       </button>}
     </div>
   );

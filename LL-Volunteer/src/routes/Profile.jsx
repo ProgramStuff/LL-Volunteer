@@ -167,10 +167,11 @@ export default function Profile() {
                 </Select>
               </FormControl>
               <Button
+              id='submitButton'
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{ mt: 3, mb: 2, backgroundColor: '#FCC737' }}
                 onSubmit={handleSubmit}
               >
                 Confirm

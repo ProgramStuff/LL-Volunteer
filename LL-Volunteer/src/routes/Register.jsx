@@ -141,16 +141,7 @@ export default function register() {
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                {/* <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                  onChange={(e) => setFName(e.target.value)}
-                /> */}
+
                 <FormControl>
                   <FormLabel htmlFor="fName">First Name</FormLabel>
                   <TextField
@@ -168,17 +159,8 @@ export default function register() {
                     />
                 </FormControl>
               </Grid>
-              <Grid item xs={12} sm={6}>
-                {/* <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                  onChange={(e) => setLName(e.target.value)}
-                /> */}
 
+              <Grid item xs={12} sm={6}>
               <FormControl>
               <FormLabel htmlFor="lName">Last Name</FormLabel>
               <TextField
@@ -197,15 +179,6 @@ export default function register() {
 
               </Grid>
               <Grid item xs={12}>
-                {/* <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                /> */}
 
                 <FormControl fullWidth>
                   <FormLabel htmlFor="email">Email</FormLabel>
@@ -226,18 +199,6 @@ export default function register() {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                {/* <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  onChange={(e) => setPassword(e.target.value)}
-                  
-                /> */}
-
                 <FormControl fullWidth>
                   <FormLabel htmlFor="email">Password</FormLabel>
                   <TextField
@@ -263,6 +224,7 @@ export default function register() {
               </Grid>
             </Grid>
             <Button
+              id="submitButton"
               type="submit"
               fullWidth
               variant="contained"
