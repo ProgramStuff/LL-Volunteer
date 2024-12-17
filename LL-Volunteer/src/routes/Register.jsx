@@ -10,6 +10,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import Footer from '../components/Footer';
 import axios from 'axios';
 
@@ -32,8 +34,61 @@ export default function register() {
   const navigate = useNavigate();
 
 
+  // Error state
+  const [emailError, setEmailError] = React.useState(false);
+  const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
+  const [passwordError, setPasswordError] = React.useState(false);
+  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
+  const [fNameError, setFNameError] = React.useState(false);
+  const [fNameErrorMessage, setFNameErrorMessage] = React.useState('');
+  const [lNameError, setLNameError] = React.useState(false);
+  const [lNameErrorMessage, setLNameErrorMessage] = React.useState('');
+  
+
+  function validateInput(){
+    if (!email ||!/\S+@\S+\.\S+/.test(email)){
+      setEmailError(true);
+      setEmailErrorMessage("Please enter a valid email.");
+    }else{
+      setEmailError(false);
+      setEmailErrorMessage("");
+    }
+
+    if(!password || password.length < 8){
+      setPasswordError(true);
+      setPasswordErrorMessage("Password must be a minimum of 8 characters long");
+    }else {
+      setPasswordError(false);
+      setPasswordErrorMessage("");
+    }
+
+    if (!fName || fName.length < 1){
+      setFNameError(true);
+      setFNameErrorMessage("First name required.");
+    }else{
+      setFNameError(false);
+      setFNameErrorMessage("");
+    }
+
+    if (!lName || lName.length < 1){
+      setLNameError(true);
+      setLNameErrorMessage("Last name required.");
+    }else{
+      setLNameError(false);
+      setLNameErrorMessage("");
+    }
+
+  }
+
+
   async function handleSubmit(event) {
-    event.preventDefault();
+
+    validateInput();
+    if (emailError || passwordError || fNameError || lNameError) {
+      event.preventDefault();
+      return;
+    }else{
+      event.preventDefault();
 
     try {
       // Hit sever registration end point
@@ -63,6 +118,7 @@ export default function register() {
       console.error("Registration failed:", error);
     }
   }
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -76,7 +132,7 @@ export default function register() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: '#FCC737' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -85,7 +141,7 @@ export default function register() {
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <TextField
+                {/* <TextField
                   autoComplete="given-name"
                   name="firstName"
                   required
@@ -94,10 +150,26 @@ export default function register() {
                   label="First Name"
                   autoFocus
                   onChange={(e) => setFName(e.target.value)}
-                />
+                /> */}
+                <FormControl>
+                  <FormLabel htmlFor="fName">First Name</FormLabel>
+                  <TextField
+                    error={fNameError}
+                    helperText={fNameErrorMessage}
+                    required
+                    fullWidth
+                    type="fName"
+                    id="fName"
+                    name="fName"
+                    autoFocus
+                    autoComplete="given-name"
+                    color={fNameError ? 'error' : 'primary'}
+                    onChange={(e) => setFName(e.target.value)}
+                    />
+                </FormControl>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
+                {/* <TextField
                   required
                   fullWidth
                   id="lastName"
@@ -105,10 +177,27 @@ export default function register() {
                   name="lastName"
                   autoComplete="family-name"
                   onChange={(e) => setLName(e.target.value)}
+                /> */}
+
+              <FormControl>
+              <FormLabel htmlFor="lName">Last Name</FormLabel>
+              <TextField
+                error={lNameError}
+                helperText={lNameErrorMessage}
+                required
+                fullWidth
+                type="lName"
+                id="lName"
+                name="lName"
+                autoComplete="family-name"
+                color={lNameError ? 'error' : 'primary'}
+                onChange={(e) => setLName(e.target.value)}
                 />
+              </FormControl>
+
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                {/* <TextField
                   required
                   fullWidth
                   id="email"
@@ -116,10 +205,28 @@ export default function register() {
                   name="email"
                   autoComplete="email"
                   onChange={(e) => setEmail(e.target.value)}
-                />
+                /> */}
+
+                <FormControl fullWidth>
+                  <FormLabel htmlFor="email">Email</FormLabel>
+                  <TextField
+                    error={emailError}
+                    helperText={emailErrorMessage}
+                    required
+                    fullWidth
+                    type="email"
+                    id="email"
+                    name="email"
+                    autoComplete="email"
+                    autoFocus
+                    placeholder="your@email.com"
+                    color={emailError ? 'error' : 'primary'}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                {/* <TextField
                   required
                   fullWidth
                   name="password"
@@ -128,7 +235,25 @@ export default function register() {
                   id="password"
                   autoComplete="new-password"
                   onChange={(e) => setPassword(e.target.value)}
-                />
+                  
+                /> */}
+
+                <FormControl fullWidth>
+                  <FormLabel htmlFor="email">Password</FormLabel>
+                  <TextField
+                    error={passwordError}
+                    helperText={passwordErrorMessage}
+                    required
+                    fullWidth
+                    name="password"
+                    type="password"
+                    placeholder="••••••••"
+                    id="password"
+                    autoComplete="current-password"
+                    color={passwordError ? 'error' : 'primary'}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </FormControl>
               </Grid>
               <Grid item xs={12}>
                 {/* <FormControlLabel
@@ -141,7 +266,7 @@ export default function register() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, backgroundColor: '#FCC737'}}
             >
               Sign Up
             </Button>
