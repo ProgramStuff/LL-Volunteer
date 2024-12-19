@@ -117,7 +117,7 @@ export default function Admin() {
               fontSize: { xs: '2rem', sm: '2.25rem', md: '2.5rem' },
               textAlign: 'center',
               mb: { xs: 2, sm: 3, md: 4 }
-            }} component="h1" variant="h5">
+            }} component="h1" variant="h5" className="title">
               Welcome {context.user.username}
             </Typography>
             <Card variant='outlined' sx={{

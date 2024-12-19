@@ -4,6 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Footer from "../components/Footer";
 import { Container } from '@mui/material';
 import Note from "../components/Note.jsx";
+import Typography from '@mui/material/Typography';
 import CreateArea from "../components/CreateArea.jsx";
 import "../assets/styles/board.css"
 import { useOutletContext } from "react-router-dom";
@@ -92,6 +93,13 @@ export default function Board() {
     <Container>
       <>
       <CssBaseline />
+      <Typography sx={{
+              fontSize: { xs: '2rem', sm: '2.25rem', md: '2.5rem' },
+              textAlign: 'center',
+              mb: { xs: 2, sm: 3, md: 4 }
+            }} component="h1" variant="h5" className="title">
+              Share A Message
+            </Typography>
       <CreateArea onAdd={addNote} />
 
       {notes.map((noteItem, index) => {

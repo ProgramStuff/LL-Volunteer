@@ -57,8 +57,8 @@ export default function UserBoard() {
     <ThemeProvider theme={darkTheme}>
     <Container>
       <CssBaseline />
-      <Typography sx={{textAlign: 'center',fontSize: '4vh'}} component="h1" variant="h5">
-        Message Board
+      <Typography sx={{textAlign: 'center',fontSize: '4vh'}} component="h1" variant="h5" className="title">
+        Messages
       </Typography>
 
       {notes.map((noteItem, index) => {

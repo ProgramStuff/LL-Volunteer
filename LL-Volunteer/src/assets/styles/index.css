@@ -22,6 +22,10 @@ body {
     color: #FCC737;
 }
 
+.title{
+    color: #FCC737;
+}
+
 article{
     break-inside: avoid;
 }

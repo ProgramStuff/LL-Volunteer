@@ -98,7 +98,7 @@ export default function Profile() {
               textAlign: 'center',
               fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' },
               mb: { xs: 2, sm: 3 }
-            }} component="h1" variant="h5">
+            }} component="h1" variant="h5" className="title">
             Welcome {context.user.username}
             </Typography>
             <Card variant='outlined' sx={{
